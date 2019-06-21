@@ -85,13 +85,6 @@ function createPayRequest(userDisplay, userIdentifier, userMessage, socialId){
                 $('#tip-again').show();
                 $('#back-btn').show();
 
-
-
-                // $('#addressLink').html(
-                //         "<p><a href=\"bitcoin:" + response.btc_addr + "\" class=\"button1\" role=\"button\">Launch GRS Wallet</a></p>" +
-                //         "<p class=\"card-text mt-3\"> Please note that the payment will only be tracked while this page is open, and you have a five minute time limit. If either the page gets closed, or give minutes elapses after you see the Bitcoin address, please refresh the page to make a new payment request.<p>"
-                //         );
-
                 // We use a global variable for isPaid because it will be easier to 'clear' it later
                 isPaid = setTimeout(function() {
                     verifyPayment(response.btc_addr)
@@ -139,11 +132,11 @@ function verifyPayment(btc_addr){
                         // Clear our timeout
                         clearTimeout(isPaid);
                         $('#addressLocation').html(
-                                "<strong>Payment Verified!</strong> <span class=\"highlight\">" + response.user_display + "</span> thanks you very much for the tip! Check the transaction with tx_hash:<div class=\"trunc\"><strong><a href=\"https://chainz.cryptoid.info/grs/tx.dws?" + response.transaction_found + ".htm\">" + response.transaction_found + "</a></strong></div>your donation has also been recorded in <strong><a href=\"/history\" >history</a></strong>" +
+                                "<strong>Payment Verified!</strong> <span class=\"highlight\">" + response.user_display + "</span> thanks you very much for the tip! Check the transaction with tx_hash:<div class=\"trunc\"><strong><a href=\"https://explorer.bitcoin.com/bch/tx/" + response.transaction_found + "\">" + response.transaction_found + "</a></strong></div>your donation has also been recorded in <strong><a href=\"/history\" >history</a></strong>" +
                                 "<hr>" +
-                                "<p>GroestlTip is a service provided for free and without ads, if you would like to help support " +
-                                "the developer in general or help cover operating costs for GroestlTip, please consider also sending some support to the team and community developers: </p>" +
-                                "<p><a href=\"https://www.groestlcoin.org/donations\"class=\"button1\" role=\"button\">Support the Groestlcoin Development!</a></p>"
+                                "<p>tipbitcoin.cash is a service provided for free and without ads, if you would like to help support " +
+                                "the developer in general or help cover operating costs for tipbitcoin.cash, please consider also sending some support to the developer: </p>" +
+                                "<p><a href=\"https://explorer.bitcoin.com/bch/address/bitcoincash:qq59s00zzjyn6d7s4flsg0w2qpnqdu3ck5nlwe6uem\"class=\"button1\" role=\"button\">Donate to tipbitcoin.cash!</a></p>"
                                 );
                     }
                     else {

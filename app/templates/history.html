@@ -55,7 +55,7 @@
 		</div>
 		{% if user.tx_id|length > 17 %}
 		<div class="col-md-2">
-			<a href="https://chainz.cryptoid.info/grs/tx.dws?{{ user.tx_id }}.htm">{{ user.tx_id | truncate(20) }}</a>
+			<a href="https://explorer.bitcoin.com/bch/tx/{{ user.tx_id }}">{{ user.tx_id | truncate(20) }}</a>
 		</div>
 		{% else %}
 		<div class="col-md-2">
