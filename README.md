@@ -19,9 +19,10 @@ streamlabs_client_id = xxx
 streamlabs_client_secret = xxx
 redirect_uri = (your redirect URI, the same as the URI in the Streamlabs app)
 ```
-
+```
 > python3 db_create.py
 > nano ~/.profile
+```
 
 ## ~/.profile:
 ```
