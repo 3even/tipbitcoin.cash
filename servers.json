@@ -1,17 +1,5 @@
 {
-    "abc1.hsmiths.com": {
-        "pruning": "-",
-        "s": "60002",
-        "t": "60001",
-        "version": "1.1"
-    },
     "electrum.imaginary.cash": {
-        "pruning": "-",
-        "s": "50002",
-        "t": "50001",
-        "version": "1.1"
-    },
-    "electroncash.dk": {
         "pruning": "-",
         "s": "50002",
         "t": "50001",

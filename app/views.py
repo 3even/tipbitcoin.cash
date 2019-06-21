@@ -17,7 +17,6 @@ from .models import User, PayReq, Transaction
 
 
 from pycoin.key import Key
-from exchanges.bitstamp import Bitstamp
 from decimal import Decimal
 import bitcoin
 import requests
@@ -208,7 +207,7 @@ def login():
         )
 
         token_data = token_response.json()
-
+        print(token_data)
         a_token = token_data['access_token']
         r_token = token_data['refresh_token']
 

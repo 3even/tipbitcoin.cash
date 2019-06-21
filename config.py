@@ -9,7 +9,6 @@ Config = configparser.ConfigParser()
 Config.read(configfile)
 
 CSRF_ENABLED = True
-SECRET_KEY = Config.get('CashTip','secret_key')
 
 # Streamlabs Keys, These are only for the testapp, replace when in production
 STREAMLABS_CLIENT_ID = Config.get('CashTip','streamlabs_client_id')

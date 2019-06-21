@@ -15,6 +15,8 @@ from .models import User, PayReq, Transaction
 
 from pycoin.key import Key
 from pycoin.key.validate import is_address_valid
+from exchanges.bitstamp import Bitstamp
+from exchanges.bch_bittrex import bch_price
 from decimal import Decimal
 from .payment import check_payment_on_address, check_address_history
 import pprint
@@ -88,7 +90,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
     '''
     user = User.query.filter_by(social_id=social_id).first()
     print(balance)
-    value = balance * GRS_price()
+    value = balance * bch_price()
     is_latest_exchange_valid = False
 
     # if exchangerate.json doesnt already exists, create a new one
@@ -166,7 +168,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
     user.streamlabs_atoken = tip_response['access_token']
     db.session.commit()
 
-    grs_amount_display = " ("+ str(grs_amount) +" GRS Donated)"
+    grs_amount_display = " ("+ str(grs_amount) +" BCH Donated)"
 
     if payrec.user_message:
         msg=payrec.user_message
@@ -188,10 +190,11 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
             data=tip_call,
             headers=headers
         ).json()
-    donation = payrec.user_display +" donated " + str(grs_amount) + " GRS ($" + str(usd_two_places) + ")\n"
+    donation = payrec.user_display +" donated $" + str(usd_two_places) + " worth of BCH!\n"
     tip_call = {
             'type'       : 'donation',
-            'message'    : donation+msg,
+            'message'    : donation,
+            'user_message' : msg,
             'image_href' : user.image_ref,
             'sound_href' : user.sound_ref,
             'duration'   : 5000,
@@ -362,7 +365,7 @@ def custom_notify(social_id, user_message, value, usd_two_places):
     user.streamlabs_atoken = tip_response['access_token']
     db.session.commit()
 
-    donation = " | " + social_id +" donated " + str(value) + " GRS($" + str(usd_two_places) + ")",
+    donation = " | " + social_id +" donated " + str(value) + " BCH($" + str(usd_two_places) + ")",
 
     tip_call = {
             'type'       : 'donation',
