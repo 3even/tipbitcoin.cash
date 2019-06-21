@@ -68,16 +68,16 @@ function createPayRequest(userDisplay, userIdentifier, userMessage, socialId){
             {
                 console.log(response.btc_addr);
                 $('#formBox').html(
-                        "<hr><div><center><font size=\"5\">Please Wait</font></center></div><div class=\"spinner\"><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div></div></br><p font-size=\"1\"><strong>Please note that the payment will only be tracked while this page is open, and you have a five minute time limit. If either the page gets closed, or five minutes elapses after you see the Groestlcoin address, please refresh the page to make a new payment request.</strong></p>"
+                        "<hr><div><center><font size=\"5\">Please Wait</font></center></div><div class=\"spinner\"><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div></div></br><p font-size=\"1\"><strong>Please note that the payment will only be tracked while this page is open, and you have a five minute time limit. If either the page gets closed, or five minutes elapses after you see the Bitcoin Cash address, please refresh the page to make a new payment request.</strong></p>"
                       )
 
                 $('#addressText').html(
-                        "<p class=\"card-text\">Please send some GRS to this address: <span class=\"highlight\">" + response.btc_addr + "</span></p>" +
-                        "<p class=\"card-text\">You can use the QR code directly below with your mobile wallet.</p><hr>"
+                        "<p class=\"card-text\">Please send some BCH to this address: <span class=\"highlight\">" + response.btc_addr + "</span></p>" +
+                        "<p class=\"card-text\">You can use the QR code below as well.</p><hr>"
                         );
                 $('#addressQR').html("");
                 $('#addressQR').qrcode({
-                    text : "groestlcoin:" + response.btc_addr,
+                    text : "bitcoincash:" + response.btc_addr,
                     render : "table"
                 });
                 $('#showModalButton').prop('disabled',true).html('Done...');
