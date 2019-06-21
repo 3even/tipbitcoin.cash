@@ -453,7 +453,7 @@ def ipn(username,social_id):
                 txn_id = request.form.get('txn_id')
                 # try:
 
-                if (payreq.user_display == "AnonymousGroestler"):
+                if (payreq.user_display == "AnonymousCasher"):
                     user_display = "AnonymousDonator"
                 else:
                     user_display = payreq.user_display

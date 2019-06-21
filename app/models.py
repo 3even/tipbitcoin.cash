@@ -38,8 +38,8 @@ class User(db.Model):
 
     paypal_email = db.Column(db.String(100))
     sound_ref = db.Column(db.String(200), default='https://uploads.twitchalerts.com/000/003/774/415/m_health.wav')
-    text_color = db.Column(db.String(10), default='#0066ff')
-    image_ref = db.Column(db.String(200), default='https://cdn.discordapp.com/attachments/416659759178055688/417986781053452288/grsloop.gif')
+    text_color = db.Column(db.String(10), default='#22cc76')
+    image_ref = db.Column(db.String(200), default='https://media.giphy.com/media/1kTU8a4ehOqydBqk3f/giphy.gif')
 
     # Transaction Linkage
     transactions = db.relationship(
@@ -113,8 +113,8 @@ class PayReq(db.Model):
             user_message=None, amount=None):
         self.addr = address
         self.timestamp = datetime.utcnow()
-        self.user_display = 'AnonymousGroestler'
-        self.user_identifier = 'GRS_Tip_PleaseCheckYourWallet'
+        self.user_display = 'AnonymousCasher'
+        self.user_identifier = 'BCH_Tip_PleaseCheckYourWallet'
         if user_display:
             self.user_display = user_display
         if user_identifier:
