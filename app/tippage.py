@@ -168,7 +168,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
     user.streamlabs_atoken = tip_response['access_token']
     db.session.commit()
 
-    grs_amount_display = " ("+ str(grs_amount) +" BCH Donated)"
+    grs_amount_display = " ("+ str('%g' % grs_amount) +" BCH Donated)"
 
     if payrec.user_message:
         msg=payrec.user_message
@@ -190,7 +190,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
             data=tip_call,
             headers=headers
         ).json()
-    donation = payrec.user_display +" donated $" + str(usd_two_places) + " worth of BCH!\n"
+    donation = payrec.user_display +" donated $" + str(usd_two_places) + " in BCH!\n"
     tip_call = {
             'type'       : 'donation',
             'message'    : donation,
@@ -218,7 +218,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
         twi_message=payreq.user_message,
         user_id=social_id,
         tx_id=txhash,
-        amount=grs_amount,
+        amount=str('%g' % grs_amount),
         timestamp=payreq.timestamp
         )
     db.session.add(new_transaction)
