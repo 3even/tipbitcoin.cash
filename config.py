@@ -9,12 +9,12 @@ Config = configparser.ConfigParser()
 Config.read(configfile)
 
 CSRF_ENABLED = True
-SECRET_KEY = Config.get('CoinStream','secret_key')
+SECRET_KEY = Config.get('CashTip','secret_key')
 
 # Streamlabs Keys, These are only for the testapp, replace when in production
-STREAMLABS_CLIENT_ID = Config.get('CoinStream','streamlabs_client_id')
-STREAMLABS_CLIENT_SECRET = Config.get('CoinStream','streamlabs_client_secret')
-COINSTREAM_REDIRECT_URI = Config.get('CoinStream', 'redirect_uri')
+STREAMLABS_CLIENT_ID = Config.get('CashTip','streamlabs_client_id')
+STREAMLABS_CLIENT_SECRET = Config.get('CashTip','streamlabs_client_secret')
+CASHTIP_REDIRECT_URI = Config.get('CashTip', 'redirect_uri')
 
 SQLALCHEMY_DATABASE_URI = ('sqlite:///' + os.path.join(basedir, 'app.db') +
                                        '?check_same_thread=False')
