@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Raleway:400,600,800);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,600,800);
 body {
   font-family: 'Raleway', sans-serif;
   background-color: #101010;
@@ -6,24 +6,26 @@ body {
   color: #fff; }
 
 a {
-  color: #fff;
+  color: #29aae2;
   text-decoration: none; }
   a:active, a:visited {
-    color: #fff;
+    color: #29aae2;
+    text-decoration: none; }
+  a:focus, a:hover {
+    color: #137dab;
     text-decoration: none !important; }
 
 footer {
   background-color: #0a0a0a;
   color: #6b6b6b;
   font-size: 11px;
-  font-size: 0.6875rem; 
-  right: 0;
+  font-size: 0.6875rem;
+  position: absolute;
   left: 0;
-  text-align: center; }
-@media (min-width: 600px) {
-	footer {bottom: 0;}}
-@media (min-width: 1200px) {
-	footer {position: absolute;}}
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  overflow: hidden; }
 
 .jumbotron {
   background-color: transparent;
@@ -118,6 +120,107 @@ footer {
     @media (min-width: 1200px) {
       .jumbotron img {
         height: 61px; } }
+
+.welcome {
+  background-color: transparent;
+  min-height: 450px;
+  text-align: center;
+  color: #ffffff;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translateX(-50%) translateY(-50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
+  .welcome h1 {
+    font-size: 30px;
+    font-size: 1.875rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 10px; }
+    @media (min-width: 576px) {
+      .welcome h1 {
+        font-size: 30px;
+        font-size: 1.875rem; } }
+    @media (min-width: 768px) {
+      .welcome h1 {
+        font-size: 40px;
+        font-size: 2.5rem; } }
+    @media (min-width: 992px) {
+      .welcome h1 {
+        font-size: 50px;
+        font-size: 3.125rem; } }
+    @media (min-width: 1200px) {
+      .welcome h1 {
+        font-size: 60px;
+        font-size: 3.75rem; } }
+  .welcome h2 {
+    font-size: 11px;
+    font-size: 0.6875rem;
+    line-height: 26px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 10px; }
+    @media (min-width: 576px) {
+      .welcome h2 {
+        font-size: 15px;
+        font-size: 0.9375rem; } }
+    @media (min-width: 768px) {
+      .welcome h2 {
+        font-size: 18px;
+        font-size: 1.125rem; } }
+    @media (min-width: 992px) {
+      .welcome h2 {
+        font-size: 19px;
+        font-size: 1.1875rem; } }
+    @media (min-width: 1200px) {
+      .welcome h2 {
+        font-size: 20px;
+        font-size: 1.25rem; } }
+  .welcome p {
+    font-size: 20px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 0;
+    line-height: 25px; }
+    @media (min-width: 576px) {
+      .welcome p {
+        font-size: 30px;
+        font-size: 1.875rem;
+        line-height: 25px; } }
+    @media (min-width: 768px) {
+      .welcome p {
+        font-size: 40px;
+        font-size: 2.5rem;
+        line-height: 35px; } }
+    @media (min-width: 992px) {
+      .welcome p {
+        font-size: 50px;
+        font-size: 3.125rem;
+        line-height: 50px; } }
+    @media (min-width: 1200px) {
+      .welcome p {
+        font-size: 50px;
+        font-size: 3.125rem;
+        line-height: 50px; } }
+  .welcome img {
+    height: 75px; }
+    @media (min-width: 576px) {
+      .welcome img {
+        height: 75px; } }
+    @media (min-width: 768px) {
+      .welcome img {
+        height: 85px; } }
+    @media (min-width: 992px) {
+      .welcome img {
+        height: 90px; } }
+    @media (min-width: 1200px) {
+      .welcome img {
+        height: 94px; } }
 
 .button1 {
   -webkit-border-radius: 3;
@@ -299,28 +402,3 @@ form {
         font-size: 1.25rem; } }
 
 /*# sourceMappingURL=styles.css.map */
-footer .right{
-  float: right;
-}
-
-.spinner {
-  margin: 100px auto 0;
-  width: 70px;
-  text-align: center;
-}
-
-.spinner {
-  width: 40px;
-  height: 40px;
-  background-color: #333;
-
-  margin: 100px auto;
-  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;
-  animation: sk-rotateplane 1.2s infinite ease-in-out;
-}
-
-@-webkit-keyframes sk-rotateplane {
-  0% { -webkit-transform: perspective(120px) }
-  50% { -webkit-transform: perspective(120px) rotateY(180deg) }
-  100% { -webkit-transform: perspective(120px) rotateY(180deg)  rotateX(180deg) }
-}
