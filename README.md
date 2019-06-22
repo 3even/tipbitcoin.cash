@@ -1,19 +1,44 @@
-## Setup instructions
+# Setup instructions
 
-* Clone repository
-* Activate your virtualenv
-* `$ pip install -r requirements.txt`
-* Create `config.ini` file with Streamlabs API key details
-* `$ python db_create.py`
-* `$ export FLASK_APP=run.py` or `$ set FLASK_APP=run.py`(Windows)
-* `$ flask run`
+In Terminal:
 
-### config.ini example
+```
+> sudo apt update
+> sudo apt upgrade -y
+> sudo apt install python2.7 python-pip python3-pip
+> git clone https://github.com/pokkst/tipbitcoin.cash
+> cd tipbitcoin.cash
+> pip install -r requirements
+> pip3 install -r requirements
+> pip install -r requirements.txt
+> pip3 install -r requirements.txt
+> nano config.ini
+```
+
+## config.ini:
 
 ```
 [CashTip]
-secret_key = xxx
 streamlabs_client_id = xxx
 streamlabs_client_secret = xxx
-redirect_uri = https://127.0.0.1:5000/launch
+redirect_uri = (your redirect URI, the same as the URI in the Streamlabs app)
+```
+
+In Terminal:
+
+```
+> python3 db_create.py
+> nano ~/.profile
+```
+
+## ~/.profile:
+
+```
+export FLASK_APP=/root/tipbitcoin.cash/run.py
+```
+	
+In Terminal:
+
+```
+> flask run & exit
 ```
