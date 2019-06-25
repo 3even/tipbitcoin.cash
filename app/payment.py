@@ -52,7 +52,7 @@ def check_payment_on_address(addr):
     serverList = read_server_list()
 
     success = False
-    for x in range(10):
+    for x in range(50):
         randomServer = grab_random_server(serverList)
         randomAddress = randomServer['serverAddress']
         randomPort = randomServer['serverPort']
@@ -75,7 +75,7 @@ def check_address_history(addr):
     serverList = read_server_list()
 
     success = False
-    for x in range(10):
+    for x in range(50):
         randomServer = grab_random_server(serverList)
         randomAddress = randomServer['serverAddress']
         randomPort = randomServer['serverPort']

@@ -15,7 +15,6 @@ from config import STREAMLABS_CLIENT_ID, STREAMLABS_CLIENT_SECRET, \
 from .forms import RegisterForm, ProfileForm
 from .models import User, PayReq, Transaction
 
-
 from pycoin.key import Key
 from decimal import Decimal
 import bitcoin
