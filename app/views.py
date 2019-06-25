@@ -127,7 +127,7 @@ def profile():
             u.image_ref = form.image_ref_field.data
 
         if (form.image_ref_field.data == ""):
-            u.image_ref = 'https://cdn.discordapp.com/attachments/416659759178055688/417986781053452288/grsloop.gif'
+            u.image_ref = 'https://media.giphy.com/media/1kTU8a4ehOqydBqk3f/giphy.gif'
 
 
         #sound on donation
@@ -180,7 +180,6 @@ def profile():
             color = userdata.text_color,
             image_ref = userdata.image_ref
             )
-
 
 @app.route('/login')
 @app.route('/launch')
