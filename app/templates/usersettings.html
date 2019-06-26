@@ -80,7 +80,8 @@
                         <div class="form-group">
                             <label for="image" class="control-label">Minimum Donation for Alert (in USD)</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" name="min_donation_ref_field" id="donation" value="{{ min_donation_ref }}" placeholder="Default: 0.00"> </input>
+				<span class="input-group-addon">$</span>
+                                <input type="number" step="any" class="form-control" name="min_donation_ref_field" id="donation" value="{{ min_donation_ref }}" placeholder="Default: 0.00"> </input>
                             </div>
                         </div>
 

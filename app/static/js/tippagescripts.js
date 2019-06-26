@@ -98,7 +98,7 @@ function createPayRequest(userDisplay, userIdentifier, userMessage, socialId){
                 function (request, status, errorThrown)
                 {
                     $('#formBox').html(
-                          "<p>Streamer might need to fix/change their xpub. Could be why it's not working.</p>"
+                          "<p>Something went wrong, please try again.</p>"
                           )
                     // TODO: Handle Errors
                     console.log('We got an error! ' + status);

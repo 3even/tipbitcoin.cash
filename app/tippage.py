@@ -313,7 +313,6 @@ def get_unused_address(social_id, deriv):
             db.session.commit()
             payment_request = None
 
-    pp.pprint(check_payment_on_address(address))
     if not check_address_history(address):
         if not payment_request:
             return address

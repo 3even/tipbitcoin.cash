@@ -9,7 +9,7 @@ def get_from_electrum(method, params=[], server='electrumx.adminsehow.com', port
     params = [params] if type(params) is not list else params
     try: 
         s = socket.socket()
-        s.settimeout(10)
+        s.settimeout(20)
         s.connect((server, port))
         s.send(json.dumps({"id": 0, "method": method, "params": params}).encode() + b'\n')
 
@@ -52,7 +52,7 @@ def check_payment_on_address(addr):
     serverList = read_server_list()
 
     success = False
-    for x in range(50):
+    for x in range(75):
         randomServer = grab_random_server(serverList)
         randomAddress = randomServer['serverAddress']
         randomPort = randomServer['serverPort']
@@ -65,12 +65,10 @@ def check_payment_on_address(addr):
                 port=randomPort)
 
         pp.pprint(addrHistory)
-        if addrHistory != -1:
-            sats = int(addrHistory['result']['unconfirmed'])
 
-            if sats > 0:
-                success = True
-                return int(addrHistory['result']['unconfirmed'])
+        if addrHistory != -1:
+            success = True
+            return int(addrHistory['result']['unconfirmed'])
 
     return -1
 
@@ -78,7 +76,7 @@ def check_address_history(addr):
     serverList = read_server_list()
 
     success = False
-    for x in range(10):
+    for x in range(75):
         randomServer = grab_random_server(serverList)
         randomAddress = randomServer['serverAddress']
         randomPort = randomServer['serverPort']
