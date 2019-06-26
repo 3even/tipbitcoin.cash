@@ -8,8 +8,6 @@ In Terminal:
 > sudo apt install python2.7 python-pip python3-pip
 > git clone https://github.com/pokkst/tipbitcoin.cash
 > cd tipbitcoin.cash
-> pip install -r requirements
-> pip3 install -r requirements
 > pip install -r requirements.txt
 > pip3 install -r requirements.txt
 > nano config.ini
