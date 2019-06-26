@@ -49,3 +49,5 @@ class ProfileForm(FlaskForm):
     text_color_field = StringField(u'Color on Donation Text')
 
     image_ref_field = StringField(u'Image/Gif for in the Donation Alert')
+
+    min_donation_ref_field = StringField(u'Minimum Donation for Alert')

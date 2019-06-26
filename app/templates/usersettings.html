@@ -41,7 +41,7 @@
                 <hr>
                     <form class="" method="post" name="ProfileForm" action="#">
                         <div class="form-group">
-                            <label for="xpub" class="control-label">Wallet Master Public Key (<a href="/how"><span class="highlight">what is this?</span></a>)</label>
+                            <label for="xpub" class="control-label">Wallet Extended Public Key (<a href="/how"><span class="highlight">what is this?</span></a>)</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-code"></i></span>
                                 <input type="text" class="form-control" name="xpub_field" id="xpub"  value="{{ xpub }}" placeholder="Example: xpub6APEnZ.... (111-char)" required> </input>
@@ -78,10 +78,15 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="color" class="control-label">Text Color</label>
+                            <label for="image" class="control-label">Minimum Donation for Alert (in USD)</label>
                             <div class="input-group">
-                                <span class="input-group-addon"><i class="fas fa-font"></i></span>
-                                <input type="color" class="form-control" name="text_color_field" id="color" value="{{ color }}" placeholder="Default: #0066ff (blue)"> </input>
+                                <input type="text" class="form-control" name="min_donation_ref_field" id="donation" value="{{ min_donation_ref }}" placeholder="Default: 0.00"> </input>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="hidden" class="form-control" name="text_color_field" id="color" value="{{ color }}" placeholder="Default: #22cc76"> </input>
                             </div>
                         </div>
 

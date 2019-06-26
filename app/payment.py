@@ -66,8 +66,11 @@ def check_payment_on_address(addr):
 
         pp.pprint(addrHistory)
         if addrHistory != -1:
-            success == True
-            return int(addrHistory['result']['unconfirmed'])
+            sats = int(addrHistory['result']['unconfirmed'])
+
+            if sats > 0:
+                success = True
+                return int(addrHistory['result']['unconfirmed'])
 
     return -1
 
@@ -75,7 +78,7 @@ def check_address_history(addr):
     serverList = read_server_list()
 
     success = False
-    for x in range(50):
+    for x in range(10):
         randomServer = grab_random_server(serverList)
         randomAddress = randomServer['serverAddress']
         randomPort = randomServer['serverPort']

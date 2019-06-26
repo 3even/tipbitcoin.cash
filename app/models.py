@@ -40,6 +40,7 @@ class User(db.Model):
     sound_ref = db.Column(db.String(200), default='https://uploads.twitchalerts.com/000/003/774/415/m_health.wav')
     text_color = db.Column(db.String(10), default='#22cc76')
     image_ref = db.Column(db.String(200), default='https://media.giphy.com/media/1kTU8a4ehOqydBqk3f/giphy.gif')
+    min_donation_ref = db.Column(db.String(10), default='0.00')
 
     # Transaction Linkage
     transactions = db.relationship(

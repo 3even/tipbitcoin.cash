@@ -203,12 +203,17 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
     }
     print(tip_call)
 
-    tip_check = requests.post(
-            api_custom,
-            data=tip_call,
-            headers=headers
-    ).json()
-    print(tip_check)
+    min_amount = user.min_donation_ref
+
+    if min_amount == "None":
+        tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
+        print(tip_check_alert)
+    else:
+        min_amount_float = float(user.min_donation_ref)
+        if usd_two_places >= min_amount_float:
+            tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
+            print(tip_check_alert)
+
     # custom_notify(social_id, payrec.user_message, value, usd_two_places)
     print("Saving transaction data in database...")
     # transaction = Transaction.query.filter_by(addr=btc_addr).first()

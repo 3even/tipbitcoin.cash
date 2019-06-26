@@ -136,18 +136,16 @@ def profile():
         if (form.sound_ref_field.data == ""):
             u.sound_ref = 'https://uploads.twitchalerts.com/000/003/774/415/m_health.wav'
 
-        #text color on donation
-        if form.text_color_field.data:
-            u.text_color = form.text_color_field.data
+        #sound on donation
+        if form.min_donation_ref_field.data:
+            u.min_donation_ref = form.min_donation_ref_field.data
 
-
+        if (form.min_donation_ref_field.data == ""):
+            u.min_donation_ref = '0.00'
 
         db.session.commit()
         nickname=session['nickname']
         return redirect(url_for('user', username=nickname))
-
-
-
 
 
     userlist = []
@@ -177,7 +175,8 @@ def profile():
             email = userdata.paypal_email,
             sound_ref = userdata.sound_ref,
             color = userdata.text_color,
-            image_ref = userdata.image_ref
+            image_ref = userdata.image_ref,
+            min_donation_ref = userdata.min_donation_ref
             )
 
 @app.route('/login')
