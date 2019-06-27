@@ -39,18 +39,16 @@ Please fill out relevant information below.<br><br>
                 name=user_display_text_field></textarea>
             </div>
         </div>
-        <!-- Single button -->
-        <label for="xpub_field">Preferred Currency</label>
 
-        <div class="sexy-form">
+        <div class="sexy-form" hidden>
             <select class="selectpicker" name=fiat_field>
                 {% for item in form.fiat_field %}
                 <option>{{ item.label }}</option>
                 {% endfor %}
             </select>
         </div>
-        <div class="sexy-form">
 
+        <div class="sexy-form">
             <div class="input-group input-group-sm col-lg-12">
                 <input type=submit value="Accept Terms & Register" class="btn btn-primary-cstm btn-sm btn-block"></input>
             </div>
