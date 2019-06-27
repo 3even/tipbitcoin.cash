@@ -21,7 +21,7 @@
 	</div> -->
 {% for user in users: %}
     <script>
-    	GetStreamStatus({{ user.social_id|tojson }});
+    	GetStreamStatusForUsers({{ user.social_id|tojson }});
     </script>
 	<script>
 		GetURL({{ user.social_id|tojson }});
@@ -30,6 +30,7 @@
 		<div class="user-wrap">
 			<div class="">
 				<div class="username underline" align="center">
+					<span class="Status{{ user.social_id }}"></span>
 					<a href="/user/{{ user.nickname }}">{{ user.nickname }}</a>
 				</div>	
 			</div>
@@ -40,7 +41,6 @@
 			</div>
 			<div class="">
 				<div align="center" style="width:100px;">
-					<!--<div class="Status"></div>-->
 				</div>	
 			</div>	
 		</div>

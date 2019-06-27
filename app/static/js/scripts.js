@@ -49,3 +49,20 @@ function GetStreamStatus(username) {
  }
 });
 }
+
+function GetStreamStatusForUsers(username) {
+  $.ajax({
+ type: 'GET',
+ url: 'https://api.twitch.tv/kraken/streams/'+username,
+ headers: {
+   'Client-ID': 'n7j8ddl0pu87ig063e6mnr33on17xw'
+ },
+ success: function(data) {
+   if (data.stream == null) {
+     $('.Status'+username).html("<div class=\"status-light sl-red pull-left\"></div>")
+   }
+   else
+    $('.Status'+username).html("<div class=\"status-light sl-green pull-left\"></div>")
+ }
+});
+}
