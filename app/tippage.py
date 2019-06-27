@@ -203,9 +203,9 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
     }
     print(tip_call)
 
-    min_amount = user.min_donation_ref
-
-    if min_amount == "None":
+    min_amount = str(user.min_donation_ref)
+    print(min_amount)
+    if min_amount == 'None':
         tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
         print(tip_check_alert)
     else:
