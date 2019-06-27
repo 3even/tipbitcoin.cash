@@ -308,14 +308,6 @@ def twitch(username):
 
     )
 
-@app.route('/cancelled')
-def cancelled_return():
-    return render_template(
-            'cancel.html',
-            users = User.query.all(),
-            nickname=session['nickname']
-            )
-
 @app.route('/about')
 def about():
     return render_template(
