@@ -8,6 +8,14 @@
 {% block content %}
   <script>
     var socialId = '{{ social_id }}';
+    var dono_amount = '{{ dono }}';
+
+    if(dono_amount === "None")
+	dono_amount = "0"
+
+    window.onload = function() {
+    	document.getElementById("ReminderText").innerHTML="This streamer has set their minimum amount for alerts to $"+dono_amount;
+    }
   </script>
   <script>GetURL({{ social_id|tojson }});</script>
   <script>GetBannerURL({{ social_id|tojson }});</script>
@@ -52,8 +60,8 @@
                   <a href="/" id="back-btn"  class="btn btn-primary-cstm button1">Back</a>
 
                 </div>
-                <div id="ReminderText"></div>
-              </form>
+		<div id="ReminderText"></div>
+	      </form>
             </div>
             <div class="col-md-4">
               <div class="card bg-inverse">

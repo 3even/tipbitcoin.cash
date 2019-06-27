@@ -264,14 +264,8 @@ def tip(username):
 
             session_nickname = None
 
-        return render_template(
-                'tipv2.html',
-                session_nickname=session_nickname,
-                nickname = u.nickname,
-                social_id = u.social_id,
-                display_text = u.display_text,
-                email = u.paypal_email
-                )
+        dono_str = u.min_donation_ref
+        return render_template('tipv2.html', session_nickname=session_nickname, nickname = u.nickname, social_id = u.social_id, display_text = u.display_text, email = u.paypal_email, dono = u.min_donation_ref)
     else:
         return render_template(
 
