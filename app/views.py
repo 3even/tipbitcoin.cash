@@ -138,7 +138,10 @@ def profile():
 
         #sound on donation
         if form.min_donation_ref_field.data:
-            u.min_donation_ref = form.min_donation_ref_field.data
+            if(is_number(form.min_donation_ref_field.data)):
+                u.min_donation_ref = form.min_donation_ref_field.data
+            else:
+                u.min_donation_ref = '0.00'
 
         if (form.min_donation_ref_field.data == ""):
             u.min_donation_ref = '0.00'
@@ -178,6 +181,15 @@ def profile():
             image_ref = userdata.image_ref,
             min_donation_ref = userdata.min_donation_ref
             )
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+
+    return False
 
 @app.route('/login')
 @app.route('/launch')
