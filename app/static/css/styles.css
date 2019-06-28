@@ -36,7 +36,7 @@ body {
     /* Large Devices, Wide Screens */
     @media only screen and (max-width : 1200px) {
 .overlay-bg {
-  position: fixed;  
+  position: absolute;  
   top: 0;
   right: 0;
   bottom: 0;
@@ -50,7 +50,7 @@ body {
     /* Medium Devices, Desktops */
     @media only screen and (max-width : 992px) {
 .overlay-bg {
-  position: fixed;  
+  position: absolute;  
   top: 0;
   right: 0;
   bottom: 0;
@@ -64,7 +64,7 @@ body {
     /* Small Devices, Tablets */
     @media only screen and (max-width : 768px) {
 .overlay-bg {
-  position: fixed;  
+  position: absolute;  
   top: 0;
   right: 0;
   bottom: 0;
@@ -78,7 +78,7 @@ body {
     /* Extra Small Devices, Phones */
     @media only screen and (max-width : 480px) {
 .overlay-bg {
-  position: fixed;  
+  position: absolute;  
   top: 0;
   right: 0;
   bottom: 0;
@@ -92,7 +92,7 @@ body {
     /* Custom, iPhone Retina */
     @media only screen and (max-width : 320px) {
 .overlay-bg {
-  position: fixed;  
+  position: absolute;  
   top: 0;
   right: 0;
   bottom: 0;
@@ -665,7 +665,7 @@ padding-top: 2px;
 }
 
 .prof-title {
-    background-color: rgba(29,41,62,0.5);
+    background-color: rgba(0,0,0,0.25);
     padding: 5px;
     font-weight: normal;
     font-size: 20px;
