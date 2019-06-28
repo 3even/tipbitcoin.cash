@@ -29,7 +29,7 @@ import qrcode
 import os
 from werkzeug.datastructures import ImmutableOrderedMultiDict
 
-streamlabs_api_url = 'https://www.twitchalerts.com/api/v1.0/'
+streamlabs_api_url = 'https://www.streamlabs.com/api/v1.0/'
 api_token = streamlabs_api_url + 'token'
 api_user = streamlabs_api_url + 'user'
 api_tips = streamlabs_api_url + "donations"
@@ -190,7 +190,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
             data=tip_call,
             headers=headers
         ).json()
-    donation = payrec.user_display +" donated $" + str(usd_two_places) + " in BCH!\n"
+    donation = "*" + payrec.user_display +"* donated *$" + str(usd_two_places) + "* in BCH!\n"
     tip_call = {
             'type'       : 'donation',
             'message'    : donation,
