@@ -228,20 +228,23 @@ def login():
                 params=user_get_call)
 
         session.clear()
-        session['social_id'] = user_access.json()['twitch']['name']
-        session['nickname'] = user_access.json()['twitch']['display_name']
-        session['access_token'] = a_token
-        session['refresh_token'] = r_token
 
-        valid_user = User.query.filter_by(social_id=session['social_id'])\
-                .first()
-        if valid_user:
-            valid_user.streamlabs_atoken = a_token
-            valid_user.streamlabs_rtoken = r_token
-            db.session.commit()
-            return redirect(url_for('profile'))
-        else:
-            return redirect(url_for('newuser'))
+        try:
+            session['social_id'] = user_access.json()['twitch']['name']
+            session['nickname'] = user_access.json()['twitch']['display_name']
+            session['access_token'] = a_token
+            session['refresh_token'] = r_token
+
+            valid_user = User.query.filter_by(social_id=session['social_id']).first()
+            if valid_user:
+                valid_user.streamlabs_atoken = a_token
+                valid_user.streamlabs_rtoken = r_token
+                db.session.commit()
+                return redirect(url_for('profile'))
+            else:
+                return redirect(url_for('newuser'))
+        except KeyError:
+            return redirect(url_for('error'))
 
     return redirect(
         "https://www.streamlabs.com/api/v1.0/authorize?client_id="+\
@@ -301,18 +304,6 @@ def handle404(e):
             users = User.query.all()
             )
 
-admin = Admin(app, name='Gronate', template_mode='bootstrap3')
-'''
-Admin
-
-@app.route('/admin')
-def admin():
-    return render_template(
-            'admin.html')
-'''
-'''
-Testing code below, please ignore
-'''
 @app.route('/twitch/<username>')
 def twitch(username):
     return redirect(
@@ -348,3 +339,10 @@ def history():
             tx = Transaction.query.order_by(Transaction.timestamp.desc()).all(),
             users = User.query.all()
     )
+
+@app.route('/error')
+def error():
+    return render_template(
+            'error.html',
+            users = User.query.all()
+            )
