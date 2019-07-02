@@ -15,8 +15,7 @@ from .models import User, PayReq, Transaction
 
 from pycoin.key import Key
 from pycoin.key.validate import is_address_valid
-from exchanges.bitstamp import Bitstamp
-from exchanges.bch_bittrex import bch_price
+from exchanges.bch_price import get_bch_price
 from decimal import Decimal
 from .payment import check_payment_on_address, check_address_history
 import pprint
@@ -71,61 +70,14 @@ def verify_payment():
     return jsonify(payment_check_return)
 
 def payment_notify(social_id, payrec, balance, txhash, grs_addr):
-    '''
-    Exchange Rate json file contains:
-    'exchange' : BitStamp/BitFinex/Kraken/Etc
-    'rate'     : USD-Pair Exchange Rate for BTC
-    'datetime' : timestamp of when last grabbed
-    '''
     user = User.query.filter_by(social_id=social_id).first()
     print(balance)
-    value = balance * bch_price()
-    is_latest_exchange_valid = False
-
-    # if exchangerate.json doesnt already exists, create a new one
-    if not os.path.exists('exchangerate.json'):
-        f = open('exchangerate.json', 'w')
-        f.write("{}")
-        f.close()
-
-    with open("exchangerate.json", 'r') as f:
-        latestexchange = json.loads(f.read())
-        # if the file is valid ('datetime' key exists), go on and parse it
-        if 'datetime' in latestexchange:
-            latestexchange['datetime'] = datetime.strptime(
-                latestexchange['datetime'], '%Y-%m-%d %H:%M:%S.%f')
-
-            if (datetime.today() - latestexchange['datetime']) <= timedelta(hours=1):
-                print("using existing exchange rate")
-                is_latest_exchange_valid = True
-                exchange = latestexchange['rate']
-
-    # If we fail to get exchange rate from Bitstamp,
-    # use old, stored value.
-    print("Exchange rate too old! Grabbing exchange rate from Bitstamp")
-    try:
-        exchange = Bitstamp().get_current_price()
-        latestexchange = {
-                'exchange' : 'bitstamp',
-                'rate'     : float(exchange),
-                'datetime' : str(datetime.today())
-                }
-
-        print("exchage rate data found!")
-        print(latestexchange)
-        with open('exchangerate.json', 'w') as f:
-            print("Opened exchange rate file for recording")
-            json.dump(latestexchange, f)
-        print("exchange rate recorded")
-    except:
-        if is_latest_exchange_valid:
-            exchange = latestexchange['rate']
-        else:
-            exchange = Bitstamp().get_current_price()
-
-    usd_value = ((value) * float(exchange)/100000000)
-    usd_two_places = float(format(usd_value, '.2f'))
     grs_amount = ((balance) /100000000)
+
+    usd_price = float(get_bch_price())
+    value = grs_amount * usd_price
+
+    usd_two_places = float(format(value, '.2f'))
     #print(usd_two_places)
     token_call = {
                     'grant_type'    : 'refresh_token',
@@ -210,8 +162,6 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
 
     print("Transaction data saved!")
     print("Donation Alert Sent")
-
-
     return tip_check
 
 @app.route('/_create_payreq', methods=['POST'])
