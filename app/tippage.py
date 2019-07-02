@@ -121,7 +121,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
             data=tip_call,
             headers=headers
         ).json()
-    donation = "*" + payrec.user_display +"* donated *$" + str(usd_two_places) + "* in BCH!\n"
+    donation = "*" + payrec.user_display + "* donated *$" + str(usd_two_places) + "* in BCH!\n"
     tip_call = {
             'type'       : 'donation',
             'message'    : donation,
@@ -242,3 +242,63 @@ def get_unused_address(social_id, deriv):
         userdata.latest_derivation = userdata.latest_derivation + 1
         db.session.commit()
         return get_unused_address(social_id, deriv + 1)
+
+@app.route('/_test_alert', methods=['POST'])
+def send_test_alert():
+    social_id = request.form['social_id']
+    user = User.query.filter_by(social_id=social_id).first()
+    grs_amount = ((65000) /100000000)
+
+    usd_price = float(get_bch_price())
+    value = grs_amount * usd_price
+
+    usd_two_places = float(format(value, '.2f'))
+    #print(usd_two_places)
+    token_call = {
+                    'grant_type'    : 'refresh_token',
+                    'client_id'     : STREAMLABS_CLIENT_ID,
+                    'client_secret' : STREAMLABS_CLIENT_SECRET,
+                    'refresh_token' : user.streamlabs_rtoken,
+                    'redirect_uri'  : CASHTIP_REDIRECT_URI
+    }
+    headers = []
+    #print("Acquiring Streamlabs Access Tokens")
+    tip_response = requests.post(
+            api_token,
+            data=token_call,
+            headers=headers
+    ).json()
+    #print("Tokens Acquired, Committing to Database")
+
+    user.streamlabs_rtoken = tip_response['refresh_token']
+    user.streamlabs_atoken = tip_response['access_token']
+    db.session.commit()
+
+    grs_amount_display = " ("+ str('%g' % grs_amount) +" BCH Donated)"
+    msg='Example message!'
+
+    donation = "*John Doe* donated *$" + str(usd_two_places) + "* in BCH!\n"
+    tip_call = {
+            'type'       : 'donation',
+            'message'    : donation,
+            'user_message' : msg,
+            'image_href' : user.image_ref,
+            'sound_href' : user.sound_ref,
+            'duration'   : 5000,
+            'special_text_color' : user.text_color,
+            'access_token' : tip_response['access_token']
+    }
+    print(tip_call)
+
+    min_amount = str(user.min_donation_ref)
+    print(min_amount)
+    if min_amount == 'None':
+        tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
+        print(tip_check_alert)
+    else:
+        min_amount_float = float(user.min_donation_ref)
+        if usd_two_places >= min_amount_float:
+            tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
+            print(tip_check_alert)
+
+    return tip_call
