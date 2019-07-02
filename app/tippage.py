@@ -80,7 +80,48 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
     user = User.query.filter_by(social_id=social_id).first()
     print(balance)
     value = balance * bch_price()
-    exchange = Bitstamp().get_current_price()
+    is_latest_exchange_valid = False
+
+    # if exchangerate.json doesnt already exists, create a new one
+    if not os.path.exists('exchangerate.json'):
+        f = open('exchangerate.json', 'w')
+        f.write("{}")
+        f.close()
+
+    with open("exchangerate.json", 'r') as f:
+        latestexchange = json.loads(f.read())
+        # if the file is valid ('datetime' key exists), go on and parse it
+        if 'datetime' in latestexchange:
+            latestexchange['datetime'] = datetime.strptime(
+                latestexchange['datetime'], '%Y-%m-%d %H:%M:%S.%f')
+
+            if (datetime.today() - latestexchange['datetime']) <= timedelta(hours=1):
+                print("using existing exchange rate")
+                is_latest_exchange_valid = True
+                exchange = latestexchange['rate']
+
+    # If we fail to get exchange rate from Bitstamp,
+    # use old, stored value.
+    print("Exchange rate too old! Grabbing exchange rate from Bitstamp")
+    try:
+        exchange = Bitstamp().get_current_price()
+        latestexchange = {
+                'exchange' : 'bitstamp',
+                'rate'     : float(exchange),
+                'datetime' : str(datetime.today())
+                }
+
+        print("exchage rate data found!")
+        print(latestexchange)
+        with open('exchangerate.json', 'w') as f:
+            print("Opened exchange rate file for recording")
+            json.dump(latestexchange, f)
+        print("exchange rate recorded")
+    except:
+        if is_latest_exchange_valid:
+            exchange = latestexchange['rate']
+        else:
+            exchange = Bitstamp().get_current_price()
 
     usd_value = ((value) * float(exchange)/100000000)
     usd_two_places = float(format(usd_value, '.2f'))
