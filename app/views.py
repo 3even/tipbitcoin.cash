@@ -136,7 +136,11 @@ def profile():
         if (form.sound_ref_field.data == ""):
             u.sound_ref = 'https://uploads.twitchalerts.com/000/003/774/415/m_health.wav'
 
-        #sound on donation
+        #special text color
+        if form.text_color_field.data:
+            u.text_color = form.text_color_field.data
+
+        #minimum donation
         if form.min_donation_ref_field.data:
             if(is_number(form.min_donation_ref_field.data)):
                 u.min_donation_ref = form.min_donation_ref_field.data

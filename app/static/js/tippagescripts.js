@@ -87,7 +87,7 @@ function createPayRequest(userDisplay, userIdentifier, userMessage, socialId){
                 // We use a global variable for isPaid because it will be easier to 'clear' it later
                 isPaid = setTimeout(function() {
                     verifyPayment(response.btc_addr)
-                }, 5000);
+                }, 1000);
             }
     , "json")
         .fail(
@@ -142,7 +142,7 @@ function verifyPayment(btc_addr){
                         // Not Paid
                         isPaid = setTimeout(function() {
                             verifyPayment(btc_addr)
-                        }, 5000);
+                        }, 1000);
                     }
             }
     , "json")
