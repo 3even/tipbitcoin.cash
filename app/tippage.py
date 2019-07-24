@@ -26,6 +26,7 @@ import time
 import sys
 import qrcode
 import os
+import random 
 from werkzeug.datastructures import ImmutableOrderedMultiDict
 
 streamlabs_api_url = 'https://www.streamlabs.com/api/v1.0/'
@@ -35,15 +36,39 @@ api_tips = streamlabs_api_url + "donations"
 api_custom = streamlabs_api_url + "alerts"
 callback_result = 0
 
+def read_server_list(): 
+    with open("servers.json", 'r') as f:
+        return json.loads(f.read())
+
+def grab_random_server(serverList):
+    serverAddress = None
+    while (serverAddress == None):
+        serverAddress = random.choice(list(serverList))
+        serverObject = serverList[serverAddress]
+        if 't' in serverObject:
+            serverPort = serverObject['t']
+        elif 's' in serverObject:
+            serverPort = serverObject['s']
+        else: 
+            serverAddress = None
+
+    return {
+            'serverAddress': str(serverAddress),
+            'serverPort'   : int(serverPort)
+            }
+
 @app.route('/_verify_payment', methods=['POST'])
 def verify_payment():
     btc_addr = request.form['btc_addr']
     social_id = request.form['social_id']
     db.session.commit()
     payrec_check = PayReq.query.filter_by(addr=btc_addr).first()
-
+    serverList = read_server_list()
+    randomServer = grab_random_server(serverList)
+    randomAddress = randomServer['serverAddress']
+    randomPort = randomServer['serverPort']
     print("PAYMENT CHECK")
-    history_check = check_address_history(btc_addr)
+    history_check = check_address_history(btc_addr, randomAddress, randomPort)
     payment_check_return = {
             'transaction_found': None,
             'payment_verified' : "FALSE",
@@ -55,7 +80,7 @@ def verify_payment():
     if history_check and payrec_check:
         payment_check_return['payment_verified'] = "TRUE"
         print("Payment Found!")
-        amount = check_payment_on_address(btc_addr)
+        amount = check_payment_on_address(btc_addr, randomAddress, randomPort)
         print(amount)
         payment_check_return['transaction_found'] = history_check[0]['tx_hash']
 
@@ -209,6 +234,11 @@ def get_unused_address(social_id, deriv):
     found is the least likely to create large gaps of empty addresses in
     someone's BTC Wallet.
     '''
+    serverList = read_server_list()
+    randomServer = grab_random_server(serverList)
+    randomAddress = randomServer['serverAddress']
+    randomPort = randomServer['serverPort']
+
     pp = pprint.PrettyPrinter(indent=2)
     userdata = User.query.filter_by(social_id = social_id).first()
 
@@ -229,7 +259,7 @@ def get_unused_address(social_id, deriv):
             db.session.commit()
             payment_request = None
 
-    if not check_address_history(address):
+    if not check_address_history(address, randomAddress, randomPort):
         if not payment_request:
             return address
         else:

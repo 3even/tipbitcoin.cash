@@ -47,22 +47,13 @@ def grab_random_server(serverList):
             'serverPort'   : int(serverPort)
             }
 
-def check_payment_on_address(addr):
-    
-    serverList = read_server_list()
-
+def check_payment_on_address(addr, serverAddress, serverPort):
     success = False
     while True:
-        randomServer = grab_random_server(serverList)
-        randomAddress = randomServer['serverAddress']
-        randomPort = randomServer['serverPort']
-
-        print(randomAddress, randomPort)
-
         addrHistory = get_from_electrum('blockchain.address.get_balance', 
                 [addr], 
-                server=randomAddress,
-                port=randomPort)
+                server=serverAddress,
+                port=serverPort)
 
         pp.pprint(addrHistory)
 
@@ -75,21 +66,13 @@ def check_payment_on_address(addr):
 
     return -1
 
-def check_address_history(addr):
-    serverList = read_server_list()
-
+def check_address_history(addr, serverAddress, serverPort):
     success = False
     for x in range(100):
-        randomServer = grab_random_server(serverList)
-        randomAddress = randomServer['serverAddress']
-        randomPort = randomServer['serverPort']
-
-        print(randomAddress, randomPort)
-
         addrHistory = get_from_electrum('blockchain.address.get_history', 
                 [addr], 
-                server=randomAddress,
-                port=randomPort)
+                server=serverAddress,
+                port=serverPort)
         print(addrHistory)
 
         if addrHistory != -1 and addrHistory['result']:
@@ -98,8 +81,8 @@ def check_address_history(addr):
             addrHistory['result'].append(get_from_electrum( \
                     'blockchain.address.get_balance', 
                     [addr], 
-                    server=randomAddress,
-                    port=randomPort)['result']['unconfirmed'])
+                    server=serverAddress,
+                    port=serverPort)['result']['unconfirmed'])
             print(addrHistory)
 
         if addrHistory != -1:
@@ -110,7 +93,7 @@ def check_address_history(addr):
 
 if __name__ == "__main__":
     payment_check = \
-        check_address_history('177nUEWD1RCNVcSxNNSRxUWtvMQ4kLJBCK')
+        check_address_history('177nUEWD1RCNVcSxNNSRxUWtvMQ4kLJBCK', 'bch.imaginary.cash', 50002)
     if not payment_check:
         print("Address found to be empty, using address!")
     else:
@@ -118,7 +101,7 @@ if __name__ == "__main__":
         pp.pprint(payment_check)
 
     payment_check = \
-        check_payment_on_address('17Tb6kwyidMjGkutGfUStKTes8SqL9Rv6x')
+        check_payment_on_address('17Tb6kwyidMjGkutGfUStKTes8SqL9Rv6x', 'bch.imaginary.cash', 50002)
 
     if not payment_check:
         print("Address found to be empty, using address!")
