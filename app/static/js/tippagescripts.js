@@ -64,7 +64,7 @@ function createPayRequest(userDisplay, userIdentifier, userMessage, socialId){
             {
                 console.log(response.btc_addr);
                 $('#formBox').html(
-                        "<hr><div><center><font size=\"5\">Please Wait</font></center></div><div class=\"spinner\"><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div></div></br><p font-size=\"1\"><strong>Please note that the payment will only be tracked while this page is open, and you have a five minute time limit. If either the page gets closed, or five minutes elapses after you see the Bitcoin Cash address, please refresh the page to make a new payment request.</strong></p>"
+                        "<hr><div><center><font size=\"5\">Waiting for payment</font></center></div><div class=\"spinner\"><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div></div></br><p font-size=\"1\"><strong>Please note that the payment will only be tracked while this page is open, and you have a five minute time limit. If either the page gets closed, or five minutes elapses after you see the Bitcoin Cash address, please refresh the page to make a new payment request.</strong></p>"
                       )
 
 		var toCashAddress = bchaddr.toCashAddress;
@@ -151,6 +151,10 @@ function verifyPayment(btc_addr){
                 {
                     // TODO: Handle Errors
                     console.log('We got an error! ' + status);
+		    clearTimeout(isPaid);
+		    isPaid = setTimeout(function() {
+                            verifyPayment(btc_addr)
+                        }, 2500);
                 }
              );
 }
