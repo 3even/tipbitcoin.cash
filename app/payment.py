@@ -9,7 +9,7 @@ def get_from_electrum(method, params=[], server='electrumx.adminsehow.com', port
     params = [params] if type(params) is not list else params
     try: 
         s = socket.socket()
-        s.settimeout(20)
+        s.settimeout(40)
         s.connect((server, port))
         s.send(json.dumps({"id": 0, "method": method, "params": params}).encode() + b'\n')
 
@@ -73,17 +73,13 @@ def check_address_history(addr, serverAddress, serverPort):
                 [addr], 
                 server=serverAddress,
                 port=serverPort)
-        print(addrHistory)
 
         if addrHistory != -1 and addrHistory['result']:
-            print(addrHistory['result'])
-
             addrHistory['result'].append(get_from_electrum( \
                     'blockchain.address.get_balance', 
                     [addr], 
                     server=serverAddress,
                     port=serverPort)['result']['unconfirmed'])
-            print(addrHistory)
 
         if addrHistory != -1:
             success == True
