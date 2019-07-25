@@ -96,7 +96,7 @@
                             <label for="color" class="control-label">Text Color</label>
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fas fa-font"></i></span>
-                                <input type="color" class="form-control" name="text_color_field" id="color" value="{{ color }}" placeholder="Default: #0066ff (blue)"> </input>
+                                <input type="color" class="form-control" name="text_color_field" id="color" value="{{ color }}" placeholder="Default: #22cc76"> </input>
                             </div>
                         </div>
 
@@ -114,6 +114,14 @@
                                         <option value="OFF">OFF</option>
                                 {% endif %}
      				</select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image" class="control-label">Minimum Spice Token for Alert</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">🌶</span>
+                                <input type="number" step="any" class="form-control" name="min_slp_ref_field" id="donation" value="{{ min_slp_ref }}" placeholder="Default: 0.0"> </input>
                             </div>
                         </div>
 

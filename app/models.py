@@ -42,6 +42,7 @@ class User(db.Model):
     image_ref = db.Column(db.String(200), default='https://media.giphy.com/media/1kTU8a4ehOqydBqk3f/giphy.gif')
     min_donation_ref = db.Column(db.String(10), default='0.00')
     slp_ref = db.Column(db.String(10), default='OFF')
+    min_slp_ref = db.Column(db.String(10), default='0.0')
 
     # Transaction Linkage
     transactions = db.relationship(

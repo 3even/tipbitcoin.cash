@@ -53,3 +53,5 @@ class ProfileForm(FlaskForm):
     min_donation_ref_field = StringField(u'Minimum Donation for Alert')
 
     slp_ref_field = StringField(u'SLP Enabled/Disabled')
+
+    min_slp_ref_field = StringField(u'Minimum SLP for Alert')

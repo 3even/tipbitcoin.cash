@@ -156,6 +156,16 @@ def profile():
         if (form.min_donation_ref_field.data == ""):
             u.min_donation_ref = '0.00'
 
+        #minimum slp donation
+        if form.min_slp_ref_field.data:
+            if(is_number(form.min_slp_ref_field.data)):
+                u.min_slp_ref = form.min_slp_ref_field.data
+            else:
+                u.min_slp_ref = '0.0'
+
+        if (form.min_slp_ref_field.data == ""):
+            u.min_slp_ref = '0.0'
+
         db.session.commit()
         nickname=session['nickname']
         return redirect(url_for('user', username=nickname))
@@ -190,7 +200,8 @@ def profile():
             color = userdata.text_color,
             image_ref = userdata.image_ref,
             min_donation_ref = userdata.min_donation_ref,
-            slp_ref = userdata.slp_ref
+            slp_ref = userdata.slp_ref,
+            min_slp_ref = userdata.min_slp_ref
             )
 
 def is_number(s):

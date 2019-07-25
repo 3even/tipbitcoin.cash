@@ -156,8 +156,12 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
                     'access_token' : tip_response['access_token']
             }
             print(tip_call)
-            tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
-            return tip_check_alert
+            min_slp_float = float(user.min_slp_ref)
+            if spice_amount >= min_slp_float:
+                tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
+                print(tip_check_alert)
+
+            return "spice.flow"
         else:
             return "not.spice"
     else:
@@ -268,7 +272,7 @@ def tip(username):
             session_nickname = None
 
         dono_str = u.min_donation_ref
-        return render_template('tipv2.html', session_nickname=session_nickname, nickname = u.nickname, social_id = u.social_id, display_text = u.display_text, email = u.paypal_email, dono = u.min_donation_ref, slp_ref = u.slp_ref)
+        return render_template('tipv2.html', session_nickname=session_nickname, nickname = u.nickname, social_id = u.social_id, display_text = u.display_text, email = u.paypal_email, dono = u.min_donation_ref, slp_ref = u.slp_ref, slp_dono = u.min_slp_ref)
     else:
         return render_template(
 

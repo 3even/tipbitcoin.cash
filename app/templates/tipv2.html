@@ -13,8 +13,15 @@
     if(dono_amount === "None")
 	dono_amount = "0"
 
+    var slp = '{{ slp_ref }}';
+
     window.onload = function() {
     	document.getElementById("ReminderText").innerHTML="This streamer has set their minimum amount for alerts to $"+dono_amount;
+
+        if(slp == "ON") {
+            var slp_dono_amount = '{{ slp_dono }}';
+            document.getElementById("ReminderSLP").innerHTML="This streamer has set their minimum SPICE for alerts to "+slp_dono_amount;
+        }
     }
   </script>
   <script>GetURL({{ social_id|tojson }});</script>
@@ -64,6 +71,9 @@
 
                 </div>
 		<div id="ReminderText"></div>
+                {% if slp_ref == 'ON' %}
+			<div id="ReminderSLP"></div>
+                {% endif %}
 	      </form>
             </div>
             <div class="col-md-4">
