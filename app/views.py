@@ -106,8 +106,9 @@ def profile():
 
         #xpub
         if form.xpub_field.data:
-            u.xpub = form.xpub_field.data
-            u.latest_derivation = 0
+            if(u.xpub != form.xpub_field.data):
+                u.xpub = form.xpub_field.data
+                u.latest_derivation = 0
 
         #text on user page
         if form.user_display_text_field.data:
