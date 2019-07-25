@@ -19,7 +19,7 @@ from exchanges.bch_price import get_bch_price
 from decimal import Decimal
 from .payment import check_payment_on_address, check_address_history
 import pprint
-import json
+import urllib.request, json
 import bitcoin
 import requests
 import time
@@ -56,6 +56,24 @@ def grab_random_server(serverList):
             'serverAddress': str(serverAddress),
             'serverPort'   : int(serverPort)
             }
+
+def get_spice_amount(tx_hash):
+    with urllib.request.urlopen("https://rest.bitcoin.com/v2/transaction/details/"+tx_hash) as url:
+        data = json.loads(url.read().decode())
+        for index, item in enumerate(data['vout']):
+            output = item['scriptPubKey']['asm']
+
+            if(output.startswith("OP_RETURN")):
+                output_array = output.split()
+                token = output_array[4]
+                if(token == "4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf"):
+                    print(output_array[5])
+                    amount_sent = int(output_array[5], 16)
+                    amount_sent_formatted = amount_sent/100000000
+                    print(amount_sent_formatted)
+                    return amount_sent_formatted
+                else:
+                    return 0.0
 
 @app.route('/_verify_payment', methods=['POST'])
 def verify_payment():
@@ -97,97 +115,124 @@ def verify_payment():
 def payment_notify(social_id, payrec, balance, txhash, grs_addr):
     user = User.query.filter_by(social_id=social_id).first()
     print(balance)
-    grs_amount = ((balance) /100000000)
+    if(balance == 546):
+        spice_amount = get_spice_amount(txhash)
+        print(spice_amount)
+        if(spice_amount != 0.0):
+            token_call = {
+                            'grant_type'    : 'refresh_token',
+                            'client_id'     : STREAMLABS_CLIENT_ID,
+                            'client_secret' : STREAMLABS_CLIENT_SECRET,
+                            'refresh_token' : user.streamlabs_rtoken,
+                            'redirect_uri'  : CASHTIP_REDIRECT_URI
+            }
+            headers = []
+            #print("Acquiring Streamlabs Access Tokens")
+            tip_response = requests.post(api_token, data=token_call, headers=headers).json()
+            #print("Tokens Acquired, Committing to Database")
 
-    usd_price = float(get_bch_price())
-    value = grs_amount * usd_price
+            user.streamlabs_rtoken = tip_response['refresh_token']
+            user.streamlabs_atoken = tip_response['access_token']
+            db.session.commit()
 
-    usd_two_places = float(format(value, '.2f'))
-    #print(usd_two_places)
-    token_call = {
-                    'grant_type'    : 'refresh_token',
-                    'client_id'     : STREAMLABS_CLIENT_ID,
-                    'client_secret' : STREAMLABS_CLIENT_SECRET,
-                    'refresh_token' : user.streamlabs_rtoken,
-                    'redirect_uri'  : CASHTIP_REDIRECT_URI
-    }
-    headers = []
-    #print("Acquiring Streamlabs Access Tokens")
-    tip_response = requests.post(
-            api_token,
-            data=token_call,
-            headers=headers
-    ).json()
-    #print("Tokens Acquired, Committing to Database")
+            if payrec.user_message:
+                msg=payrec.user_message
+            else:
+                msg=''
 
-    user.streamlabs_rtoken = tip_response['refresh_token']
-    user.streamlabs_atoken = tip_response['access_token']
-    db.session.commit()
-
-    grs_amount_display = " ("+ str('%g' % grs_amount) +" BCH Donated)"
-
-    if payrec.user_message:
-        msg=payrec.user_message
-
+            donation = "*" + payrec.user_display + "* donated *" + str(spice_amount) + " SPICE*!\n"
+            tip_call = {
+                    'type'       : 'donation',
+                    'message'    : donation,
+                    'user_message' : msg,
+                    'image_href' : user.image_ref,
+                    'sound_href' : user.sound_ref,
+                    'duration'   : 5000,
+                    'special_text_color' : user.text_color,
+                    'access_token' : tip_response['access_token']
+            }
+            print(tip_call)
+            tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
+            return tip_check_alert
+        else:
+            return "not.spice"
     else:
-        msg=''
+        grs_amount = ((balance) /100000000)
 
-    tip_call = {
-            'name'       : payrec.user_display,
-            'identifier' : payrec.user_identifier,
-            'message'    : msg+grs_amount_display,
-            'amount'     : usd_two_places,
-            'currency'   : 'USD',
-            'access_token' : tip_response['access_token'],
-            'skip_alert' : 'yes'
-    }
-    tip_check = requests.post(
-            api_tips,
-            data=tip_call,
-            headers=headers
-        ).json()
-    donation = "*" + payrec.user_display + "* donated *$" + str(usd_two_places) + "* in BCH!\n"
-    tip_call = {
-            'type'       : 'donation',
-            'message'    : donation,
-            'user_message' : msg,
-            'image_href' : user.image_ref,
-            'sound_href' : user.sound_ref,
-            'duration'   : 5000,
-            'special_text_color' : user.text_color,
-            'access_token' : tip_response['access_token']
-    }
-    print(tip_call)
+        usd_price = float(get_bch_price())
+        value = grs_amount * usd_price
 
-    min_amount = str(user.min_donation_ref)
-    print(min_amount)
-    if min_amount == 'None':
-        tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
-        print(tip_check_alert)
-    else:
-        min_amount_float = float(user.min_donation_ref)
-        if usd_two_places >= min_amount_float:
+        usd_two_places = float(format(value, '.2f'))
+        #print(usd_two_places)
+        token_call = {
+                        'grant_type'    : 'refresh_token',
+                        'client_id'     : STREAMLABS_CLIENT_ID,
+                        'client_secret' : STREAMLABS_CLIENT_SECRET,
+                        'refresh_token' : user.streamlabs_rtoken,
+                        'redirect_uri'  : CASHTIP_REDIRECT_URI
+        }
+        headers = []
+        #print("Acquiring Streamlabs Access Tokens")
+        tip_response = requests.post(api_token, data=token_call, headers=headers).json()
+        #print("Tokens Acquired, Committing to Database")
+
+        user.streamlabs_rtoken = tip_response['refresh_token']
+        user.streamlabs_atoken = tip_response['access_token']
+        db.session.commit()
+
+        grs_amount_display = " ("+ str('%g' % grs_amount) +" BCH Donated)"
+
+        if payrec.user_message:
+            msg=payrec.user_message
+
+        else:
+            msg=''
+
+        tip_call = {
+                'name'       : payrec.user_display,
+                'identifier' : payrec.user_identifier,
+                'message'    : msg+grs_amount_display,
+                'amount'     : usd_two_places,
+                'currency'   : 'USD',
+                'access_token' : tip_response['access_token'],
+                'skip_alert' : 'yes'
+        }
+        tip_check = requests.post(api_tips, data=tip_call, headers=headers).json()
+        donation = "*" + payrec.user_display + "* donated *$" + str(usd_two_places) + "* in BCH!\n"
+        tip_call = {
+                'type'       : 'donation',
+                'message'    : donation,
+                'user_message' : msg,
+                'image_href' : user.image_ref,
+                'sound_href' : user.sound_ref,
+                'duration'   : 5000,
+                'special_text_color' : user.text_color,
+                'access_token' : tip_response['access_token']
+        }
+        print(tip_call)
+
+        min_amount = str(user.min_donation_ref)
+        print(min_amount)
+        if min_amount == 'None':
             tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
             print(tip_check_alert)
+        else:
+            min_amount_float = float(user.min_donation_ref)
+            if usd_two_places >= min_amount_float:
+                tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
+                print(tip_check_alert)
 
-    # custom_notify(social_id, payrec.user_message, value, usd_two_places)
-    print("Saving transaction data in database...")
-    # transaction = Transaction.query.filter_by(addr=btc_addr).first()
-    payreq = PayReq.query.filter_by(addr=grs_addr).first()
-    new_transaction = Transaction(
-        twi_user=payreq.user_display,
-        twi_message=payreq.user_message,
-        user_id=social_id,
-        tx_id=txhash,
-        amount=str('%g' % grs_amount),
-        timestamp=payreq.timestamp
-        )
-    db.session.add(new_transaction)
-    db.session.commit()
+        # custom_notify(social_id, payrec.user_message, value, usd_two_places)
+        print("Saving transaction data in database...")
+        # transaction = Transaction.query.filter_by(addr=btc_addr).first()
+        payreq = PayReq.query.filter_by(addr=grs_addr).first()
+        new_transaction = Transaction(twi_user=payreq.user_display, twi_message=payreq.user_message, user_id=social_id, tx_id=txhash, amount=str('%g' % grs_amount), timestamp=payreq.timestamp)
+        db.session.add(new_transaction)
+        db.session.commit()
 
-    print("Transaction data saved!")
-    print("Donation Alert Sent")
-    return tip_check
+        print("Transaction data saved!")
+        print("Donation Alert Sent")
+        return tip_check
 
 @app.route('/_create_payreq', methods=['POST'])
 def create_payment_request():
@@ -219,7 +264,7 @@ def tip(username):
             session_nickname = None
 
         dono_str = u.min_donation_ref
-        return render_template('tipv2.html', session_nickname=session_nickname, nickname = u.nickname, social_id = u.social_id, display_text = u.display_text, email = u.paypal_email, dono = u.min_donation_ref)
+        return render_template('tipv2.html', session_nickname=session_nickname, nickname = u.nickname, social_id = u.social_id, display_text = u.display_text, email = u.paypal_email, dono = u.min_donation_ref, slp_ref = u.slp_ref)
     else:
         return render_template(
 
@@ -307,7 +352,7 @@ def send_test_alert():
     grs_amount_display = " ("+ str('%g' % grs_amount) +" BCH Donated)"
     msg='Example message!'
 
-    donation = "*John Doe* donated *$" + str(usd_two_places) + "* in BCH!\n"
+    donation = "*John Doe* donated *$" + str(usd_two_places) + "* in BCH! \n"
     tip_call = {
             'type'       : 'donation',
             'message'    : donation,

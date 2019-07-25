@@ -101,6 +101,23 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="text" class="control-label">Enable SLP Tips?</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fas fa-font"></i></span>
+				<select name="slp_ref_field" class="form-control">
+				{% if slp_ref == 'OFF' %}
+     					<option value="ON">ON</option>
+     					<option value="OFF" selected value>OFF</option>
+				{% endif %}
+				{% if slp_ref == 'ON' %}
+                                        <option value="ON" selected value>ON</option>
+                                        <option value="OFF">OFF</option>
+                                {% endif %}
+     				</select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <button type="submit" class="btn btn-primary-cstm btn-lg btn-block login-button">Update</button>
                         </div>
                     </form>

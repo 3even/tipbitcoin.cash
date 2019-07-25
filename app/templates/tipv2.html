@@ -56,6 +56,9 @@
                 </div>
                 <div class="form-group">
                   <button id="showModalButton" class="btn btn-primary-cstm button1">Tip with Bitcoin Cash (BCH)</button>
+		  {% if slp_ref == 'ON' %}
+                  <button id="showSLPButton" class="btn btn-primary-cstm button1">Tip with SPICE Token (SLP)</button>
+		  {% endif %}
                   <a href="/tip/{{ nickname }}" id="tip-again"  class="btn btn-primary-cstm button1">Tip again</a>
                   <a href="/" id="back-btn"  class="btn btn-primary-cstm button1">Back</a>
 
@@ -67,8 +70,14 @@
               <div class="card bg-inverse">
                 <div class="card-block" id="addressLocation">
                   <div id="addressText">
+		  {% if slp_ref == 'ON' %}
+		    <p>The address to send your Bitcoin Cash or Spice Tokens will appear <strong>here</strong> once you press the <span class="highlight">Tip with Bitcoin Cash (BCH)</span> or <span class="highlight">Tip with SPICE Token (SLP)</span> button.</p>
+                    <p>Please make sure that you've filled in the forms <strong>before</strong> hitting the button.</p>
+                  {% endif %}
+		  {% if slp_ref == 'OFF' %}
                     <p>The address to send your Bitcoin Cash will appear <strong>here</strong> once you press the <span class="highlight">Tip with Bitcoin Cash (BCH)</span> button.</p>
                     <p>Please make sure that you've filled in the forms <strong>before</strong> hitting the button.</p>
+                  {% endif %}
                   </div>
                   <div id="randomInt"></div>
                   <div id="addressQR" class="py-3 centered"></div>

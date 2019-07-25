@@ -51,3 +51,5 @@ class ProfileForm(FlaskForm):
     image_ref_field = StringField(u'Image/Gif for in the Donation Alert')
 
     min_donation_ref_field = StringField(u'Minimum Donation for Alert')
+
+    slp_ref_field = StringField(u'SLP Enabled/Disabled')

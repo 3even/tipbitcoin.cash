@@ -41,6 +41,7 @@ class User(db.Model):
     text_color = db.Column(db.String(10), default='#22cc76')
     image_ref = db.Column(db.String(200), default='https://media.giphy.com/media/1kTU8a4ehOqydBqk3f/giphy.gif')
     min_donation_ref = db.Column(db.String(10), default='0.00')
+    slp_ref = db.Column(db.String(10), default='OFF')
 
     # Transaction Linkage
     transactions = db.relationship(

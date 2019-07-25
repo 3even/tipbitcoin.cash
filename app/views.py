@@ -141,6 +141,11 @@ def profile():
         if form.text_color_field.data:
             u.text_color = form.text_color_field.data
 
+        #SLP settings
+        if form.slp_ref_field.data:
+            print(form.slp_ref_field.data)
+            u.slp_ref = form.slp_ref_field.data
+
         #minimum donation
         if form.min_donation_ref_field.data:
             if(is_number(form.min_donation_ref_field.data)):
@@ -184,7 +189,8 @@ def profile():
             sound_ref = userdata.sound_ref,
             color = userdata.text_color,
             image_ref = userdata.image_ref,
-            min_donation_ref = userdata.min_donation_ref
+            min_donation_ref = userdata.min_donation_ref,
+            slp_ref = userdata.slp_ref
             )
 
 def is_number(s):
