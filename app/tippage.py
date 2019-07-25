@@ -58,22 +58,26 @@ def grab_random_server(serverList):
             }
 
 def get_spice_amount(tx_hash):
-    with urllib.request.urlopen("https://rest.bitcoin.com/v2/transaction/details/"+tx_hash) as url:
-        data = json.loads(url.read().decode())
-        for index, item in enumerate(data['vout']):
-            output = item['scriptPubKey']['asm']
+    try:
+        with urllib.request.urlopen("https://rest.bitcoin.com/v2/transaction/details/"+tx_hash) as url:
+            if(url.getcode() == 200):
+                data = json.loads(url.read().decode())
+                for index, item in enumerate(data['vout']):
+                    output = item['scriptPubKey']['asm']
 
-            if(output.startswith("OP_RETURN")):
-                output_array = output.split()
-                token = output_array[4]
-                if(token == "4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf"):
-                    print(output_array[5])
-                    amount_sent = int(output_array[5], 16)
-                    amount_sent_formatted = amount_sent/100000000
-                    print(amount_sent_formatted)
-                    return amount_sent_formatted
-                else:
-                    return 0.0
+                    if(output.startswith("OP_RETURN")):
+                        output_array = output.split()
+                        token = output_array[4]
+                        if(token == "4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf"):
+                            print(output_array[5])
+                            amount_sent = int(output_array[5], 16)
+                            amount_sent_formatted = amount_sent/100000000
+                            print(amount_sent_formatted)
+                            return amount_sent_formatted
+                        else:
+                            return 0.0
+    except urllib.error.HTTPError as e:
+        return get_spice_amount(tx_hash)
 
 @app.route('/_verify_payment', methods=['POST'])
 def verify_payment():
