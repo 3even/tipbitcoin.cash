@@ -1,6 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script>
+function DisplayStatuses() {
+var apiUrl = "https://api.twitch.tv/helix/streams";
+{% for user in users: %}
+{% if loop.index == 1 %}
+apiUrl += "?user_login={{ user.social_id }}";
+{% else %}
+apiUrl += "&user_login={{ user.social_id }}";
+{% endif %}
+{% endfor %}
+  $.ajax({
+ type: 'GET',
+ url: apiUrl,
+ headers: {
+   'Client-ID': '7huj5qkr57zrkcak291aed6s941jjq'
+ },
+ success: function(data) {
+	console.log(apiUrl);
+	console.log(data);
+
+	for(var i = 0; i < data.data.length; i++) {
+    		var obj = data.data[i];
+    		var userId = obj.user_name.toLowerCase();
+		$('.status'+userId).html("<span><div class=\"status-light sl-green pull-left\"></div><div class=\"pull-left\"></div></span>")
+	}
+ }
+});
+}
+
+DisplayStatuses();
+</script>
 <div class="container container-inv animated fadeIn">
     <div class="row prof-wrap">
 		<div class="prof-body">
@@ -10,21 +41,13 @@
 
 		</div>
 <div class="prof-body">
-	<!-- <div class="col-md-12">
-		ONLINE:
-	</div>
-	<div class="col-md-12">
-		OFFLINE:
-	</div> -->
 {% for user in users: %}
-	<script>
-		GetURL({{ user.social_id|tojson }});
-	</script>
 	<div class="col-md-3">
 		<div class="user-wrap">
 			<div class="">
-				<div class="username underline" align="center">
-					<a href="/user/{{ user.nickname }}">{{ user.nickname }}</a>
+				<div class="username underline-user" align="center">
+					<span class="status{{ user.social_id }}"><div class="status-light sl-red pull-left"></div></span>
+					<a href="/user/{{ user.nickname }}" style="color:#fff;">{{ user.nickname }}</a>
 				</div>	
 			</div>
 			<div class="">
