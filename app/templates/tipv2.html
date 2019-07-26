@@ -25,18 +25,12 @@
     }
   </script>
   <script>GetURL({{ social_id|tojson }});</script>
-  <script>GetBannerURL({{ social_id|tojson }});</script>
   <script>GetStreamStatus({{ social_id|tojson }});</script>
 <div class="container container-inv animated fadeIn">
 
     <div class="row prof-wrap">
         <div class="col-md-12 prof-title">
          <a href="/user/{{ nickname }}" id="Nickname">{{ nickname }}</a>
-        </div>
-        <div class="col-md-12 prof-header">
-          <div class="row">
-            <div id="ProfileBanner" class=""></div>
-          </div>
         </div>
         <div class="col-md-12 prof-body">
             <div class="col-md-3">

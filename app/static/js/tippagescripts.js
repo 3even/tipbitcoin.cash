@@ -163,7 +163,9 @@ function createPayRequestSLP(userDisplay, userIdentifier, userMessage, socialId)
                         "<hr><div><center><font size=\"5\">Waiting for payment</font></center></div><div class=\"spinner\"><div class=\"bounce1\"></div><div class=\"bounce2\"></div><div class=\"bounce3\"></div></div></br><p font-size=\"1\"><strong>Please note that the payment will only be tracked while this page is open, and you have a five minute time limit. If either the page gets closed, or five minutes elapses after you see the Bitcoin Cash address, please refresh the page to make a new payment request.</strong></p>"
                       )
 
-		$.getJSON('https://rest.bitcoin.com/v2/slp/convert/'+response.btc_addr, function(data) {
+		var serverArray = ['https://rest.imaginary.cash/v2/slp/convert/', 'https://rest.bitcoin.com/v2/slp/convert/'];
+		var randomServer = Math.floor(Math.random()*serverArray.length);
+		$.getJSON(serverArray[randomServer]+response.btc_addr, function(data) {
 			$('#addressText').html(
                         "<p class=\"card-text\" style=\"font-size:12px;\">Please send SPICE to: <span class=\"highlight\">" + data["slpAddress"] + "</span></p>" +
                         "<p class=\"card-text\" style=\"font-size:12px;\">You can use the QR code below as well.</p><hr>"
