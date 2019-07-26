@@ -5,10 +5,12 @@
 function DisplayStatuses() {
 var apiUrl = "https://api.twitch.tv/helix/streams";
 {% for user in users: %}
-{% if loop.index == 1 %}
+{% if loop.index >= min and loop.index < max %}
+{% if loop.index == min %}
 apiUrl += "?user_login={{ user.social_id }}";
 {% else %}
 apiUrl += "&user_login={{ user.social_id }}";
+{% endif %}
 {% endif %}
 {% endfor %}
   $.ajax({
@@ -18,14 +20,14 @@ apiUrl += "&user_login={{ user.social_id }}";
    'Client-ID': '7huj5qkr57zrkcak291aed6s941jjq'
  },
  success: function(data) {
-	console.log(apiUrl);
-	console.log(data);
+        console.log(apiUrl);
+        console.log(data);
 
-	for(var i = 0; i < data.data.length; i++) {
-    		var obj = data.data[i];
-    		var userId = obj.user_name.toLowerCase();
-		$('.status'+userId).html("<span><div class=\"status-light sl-green pull-left\"></div><div class=\"pull-left\"></div></span>")
-	}
+        for(var i = 0; i < data.data.length; i++) {
+                var obj = data.data[i];
+                var userId = obj.user_name.toLowerCase();
+                $('.status'+userId).html("<span><div class=\"status-light sl-green pull-left\"></div><div class=\"pull-left\"></div></span>")
+        }
  }
 });
 }
@@ -33,40 +35,43 @@ apiUrl += "&user_login={{ user.social_id }}";
 DisplayStatuses();
 </script>
 <div class="container container-inv animated fadeIn">
-    <div class="row prof-wrap">
-		<div class="prof-body">
-			<div class="col-md-12" style="border-bottom: 2px solid white;">
-				<font size="5">Streamers</font>
-			</div>
+    <div class="row prof-wrap-users">
+                <div class="prof-body-users">
+                        <div class="col-md-12" style="border-bottom: 2px solid white;">
+                                <font size="5">Streamers</font>
+                        </div>
 
-		</div>
-<div class="prof-body">
+                </div>
+<div class="prof-body-users">
 {% for user in users: %}
-	<div class="col-md-3">
-		<div class="user-wrap">
-			<div class="">
-				<div class="username underline-user" align="center">
-					<span class="status{{ user.social_id }}"><div class="status-light sl-red pull-left"></div></span>
-					<a href="/user/{{ user.nickname }}" style="color:#fff;">{{ user.nickname }}</a>
-				</div>	
-			</div>
-			<div class="">
-				<div align="center">
-					<a href="https://twitch.tv/{{ user.social_id }}"><span><i class="fab fa-twitch"></i></span> twitch.tv/{{ user.social_id }}</a>
-				</div>	
-			</div>
-			<div class="">
-				<div align="center" style="width:100px;">
-				</div>	
-			</div>	
-		</div>
-		
-	</div>
-
-
+{% if loop.index >= min and loop.index < max %}
+        <div class="col-md-3">
+                <div class="user-wrap">
+                        <div class="">
+                                <div class="username underline-user" align="center">
+                                        <span class="status{{ user.social_id }}"><div class="status-light sl-red pull-left"></div></span>
+                                        <a href="/user/{{ user.nickname }}" style="color:#fff;">{{ user.nickname }}</a>
+                                </div>
+                        </div>
+                        <div class="">
+                                <div align="center">
+                                        <a href="https://twitch.tv/{{ user.social_id }}"><span><i class="fab fa-twitch"></i></span> twitch.tv/{{ user.social_id }}</a>
+                                </div>
+                        </div>
+                        <div class="">
+                                <div align="center" style="width:100px;">
+                                </div>
+                        </div>
+                </div>
+        </div>
+{% endif %}
 {% endfor %}
+<br>
 </div>
-
+{% if prevpage != 0 %}
+<a href="https://tipbitcoin.cash/users/{{ prevpage }}" style="padding:10px; border-radius:10%; background:#22cc76; float:left;">Prev</a>
+{% endif %}
+<a href="https://tipbitcoin.cash/users/{{ nextpage }}" style="padding:10px; border-radius:10%; background:#22cc76; float:right;">Next</a>
 </div>
 </div>
 

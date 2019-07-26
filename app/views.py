@@ -374,12 +374,22 @@ def how():
 
 @app.route('/users')
 def users():
-    return render_template(
-            'users.html',
-            users = User.query.all()
-    )
+    return render_template('users.html', users = User.query.all(), page = 1, min = 1, max = 21, prevpage = 0, nextpage = 2)
 
-@app.route('/history')
+@app.route('/users/<pagenum>')
+def users_page(pagenum):
+    min_count = int(pagenum) * 20 - 19
+    max_count = int(pagenum) * 20 + 1
+    prev = 0
+
+    if(int(pagenum) == 1):
+        prev = 0
+    else:
+        prev = int(pagenum) - 1
+
+    next = int(pagenum) + 1
+    return render_template('users.html', users = User.query.all(), page = pagenum, min = min_count, max = max_count, prevpage = prev, nextpage = next)
+
 def history():
      return render_template(
             'history.html',
