@@ -390,6 +390,7 @@ def users_page(pagenum):
     next = int(pagenum) + 1
     return render_template('users.html', users = User.query.all(), page = pagenum, min = min_count, max = max_count, prevpage = prev, nextpage = next)
 
+@app.route('/history')
 def history():
      return render_template(
             'history.html',
