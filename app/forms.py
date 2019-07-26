@@ -55,3 +55,9 @@ class ProfileForm(FlaskForm):
     slp_ref_field = StringField(u'SLP Enabled/Disabled')
 
     min_slp_ref_field = StringField(u'Minimum SLP for Alert')
+
+    slp_sound_ref_field = StringField(u'SLP Tip Alert Sound')
+
+    slp_image_ref_field = StringField(u'Image/Gif for in the SLP Tip Alert')
+
+    slp_text_color_field = StringField(u'Color on SLP Tip Text')

@@ -137,6 +137,28 @@ def profile():
         if (form.sound_ref_field.data == ""):
             u.sound_ref = 'https://uploads.twitchalerts.com/000/003/774/415/m_health.wav'
 
+        #Image/GIF on donation
+        #SLP
+        if form.slp_image_ref_field.data:
+            u.slp_image_ref = form.slp_image_ref_field.data
+
+        if (form.slp_image_ref_field.data == ""):
+            u.slp_image_ref = 'https://media.giphy.com/media/1kTU8a4ehOqydBqk3f/giphy.gif'
+
+
+        #sound on donation
+        #SLP
+        if form.slp_sound_ref_field.data:
+            u.slp_sound_ref = form.slp_sound_ref_field.data
+
+        if (form.slp_sound_ref_field.data == ""):
+            u.slp_sound_ref = 'https://uploads.twitchalerts.com/000/003/774/415/m_health.wav'
+
+        #special text color
+        #SLP
+        if form.slp_text_color_field.data:
+            u.slp_text_color = form.slp_text_color_field.data
+
         #special text color
         if form.text_color_field.data:
             u.text_color = form.text_color_field.data
@@ -201,7 +223,10 @@ def profile():
             image_ref = userdata.image_ref,
             min_donation_ref = userdata.min_donation_ref,
             slp_ref = userdata.slp_ref,
-            min_slp_ref = userdata.min_slp_ref
+            min_slp_ref = userdata.min_slp_ref,
+            slp_sound_ref = userdata.slp_sound_ref,
+            slp_image_ref = userdata.slp_image_ref,
+            slp_color = userdata.slp_text_color
             )
 
 def is_number(s):

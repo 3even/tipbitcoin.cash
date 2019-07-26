@@ -57,6 +57,17 @@ $(document).ready(function() {
 
     });
 
+    $('#testAlertSLPButton').click(function (event) {
+        // Stop redirections
+        event.preventDefault();
+        // Call our create pay request function
+        sendTestAlertSLP(
+                socialId,
+        );
+
+
+    });
+
 });
 
 // We'll keep it inline for now...
@@ -267,3 +278,24 @@ function sendTestAlert(socialIdStr){
              );
 }
 
+function sendTestAlertSLP(socialIdStr){
+    // Does this work? I have no idea!
+    var postVars = "social_id="+socialIdStr;
+
+    var resp = $.post('/_test_alert_slp',
+            {
+                social_id: socialIdStr
+            },
+            function (response)
+            {
+                console.log(response);
+            }
+    , "json")
+        .fail(
+                function (request, status, errorThrown)
+                {
+                    // TODO: Handle Errors
+                    console.log('We got an error! ' + status);
+                }
+             );
+}

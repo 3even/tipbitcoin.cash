@@ -43,6 +43,9 @@ class User(db.Model):
     min_donation_ref = db.Column(db.String(10), default='0.00')
     slp_ref = db.Column(db.String(10), default='OFF')
     min_slp_ref = db.Column(db.String(10), default='0.0')
+    slp_sound_ref = db.Column(db.String(200), default='https://uploads.twitchalerts.com/000/003/774/415/m_health.wav')
+    slp_image_ref = db.Column(db.String(200), default='https://media.giphy.com/media/1kTU8a4ehOqydBqk3f/giphy.gif')
+    slp_text_color = db.Column(db.String(10), default='#ff0000')
 
     # Transaction Linkage
     transactions = db.relationship(

@@ -59,7 +59,7 @@ def grab_random_server(serverList):
 
 def get_spice_amount(tx_hash):
     try:
-        with urllib.request.urlopen("https://rest.bitcoin.com/v2/transaction/details/"+tx_hash) as url:
+        with urllib.request.urlopen("https://bch.coin.space/api/tx/"+tx_hash) as url:
             if(url.getcode() == 200):
                 data = json.loads(url.read().decode())
                 for index, item in enumerate(data['vout']):
@@ -149,10 +149,10 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
                     'type'       : 'donation',
                     'message'    : donation,
                     'user_message' : msg,
-                    'image_href' : user.image_ref,
-                    'sound_href' : user.sound_ref,
+                    'image_href' : user.slp_image_ref,
+                    'sound_href' : user.slp_sound_ref,
                     'duration'   : 5000,
-                    'special_text_color' : user.text_color,
+                    'special_text_color' : user.slp_text_color,
                     'access_token' : tip_response['access_token']
             }
             print(tip_call)
@@ -373,15 +373,52 @@ def send_test_alert():
     }
     print(tip_call)
 
-    min_amount = str(user.min_donation_ref)
-    print(min_amount)
-    if min_amount == 'None':
-        tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
-        print(tip_check_alert)
-    else:
-        min_amount_float = float(user.min_donation_ref)
-        if usd_two_places >= min_amount_float:
-            tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
-            print(tip_check_alert)
+    tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
+
+    return tip_call
+
+@app.route('/_test_alert_slp', methods=['POST'])
+def send_test_alert_slp():
+    social_id = request.form['social_id']
+    user = User.query.filter_by(social_id=social_id).first()
+    grs_amount = ((123000000) /100000000)
+
+    #print(usd_two_places)
+    token_call = {
+                    'grant_type'    : 'refresh_token',
+                    'client_id'     : STREAMLABS_CLIENT_ID,
+                    'client_secret' : STREAMLABS_CLIENT_SECRET,
+                    'refresh_token' : user.streamlabs_rtoken,
+                    'redirect_uri'  : CASHTIP_REDIRECT_URI
+    }
+    headers = []
+    #print("Acquiring Streamlabs Access Tokens")
+    tip_response = requests.post(
+            api_token,
+            data=token_call,
+            headers=headers
+    ).json()
+    #print("Tokens Acquired, Committing to Database")
+
+    user.streamlabs_rtoken = tip_response['refresh_token']
+    user.streamlabs_atoken = tip_response['access_token']
+    db.session.commit()
+
+    msg='Example message!'
+
+    donation = "*John Doe* donated *" + str(grs_amount) + " SPICE*! \n"
+    tip_call = {
+            'type'       : 'donation',
+            'message'    : donation,
+            'user_message' : msg,
+            'image_href' : user.slp_image_ref,
+            'sound_href' : user.slp_sound_ref,
+            'duration'   : 5000,
+            'special_text_color' : user.slp_text_color,
+            'access_token' : tip_response['access_token']
+    }
+    print(tip_call)
+
+    tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
 
     return tip_call
