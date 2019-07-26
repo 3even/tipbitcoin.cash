@@ -19,10 +19,10 @@ function GetStreamStatus(username) {
  },
  success: function(data) {
         if(data.data.length == 0){
-		$('.Status').html("<span><div class=\"status-light sl-red pull-left\"></div><div class=\"pull-left\">OFFLINE</div></span>")
+		$('.Status').html("<span><div class=\"status-light-profile sl-red pull-left\"></div><div class=\"pull-left\">OFFLINE</div></span>")
         }
         else {
-    		$('.Status').html("<span><div class=\"status-light sl-green pull-left\"></div><div class=\"pull-left\">LIVE</div></span>")
+    		$('.Status').html("<span><div class=\"status-light-profile sl-green pull-left\"></div><div class=\"pull-left\">LIVE</div></span>")
         }
  }
 });
