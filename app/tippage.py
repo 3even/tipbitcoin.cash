@@ -161,6 +161,14 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
                 tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
                 print(tip_check_alert)
 
+            print("Saving transaction data in database...")
+            payreq = PayReq.query.filter_by(addr=grs_addr).first()
+            new_transaction = Transaction(twi_user=payreq.user_display, twi_message=payreq.user_message, user_id=social_id, tx_id=txhash, amount=str('%g' % spice_amount), timestamp=payreq.timestamp, token="SPICE")
+            db.session.add(new_transaction)
+            db.session.commit()
+
+            print("Transaction data saved!")
+            print("Donation Alert Sent")
             return "spice.flow"
         else:
             return "not.spice"
@@ -234,7 +242,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
         print("Saving transaction data in database...")
         # transaction = Transaction.query.filter_by(addr=btc_addr).first()
         payreq = PayReq.query.filter_by(addr=grs_addr).first()
-        new_transaction = Transaction(twi_user=payreq.user_display, twi_message=payreq.user_message, user_id=social_id, tx_id=txhash, amount=str('%g' % grs_amount), timestamp=payreq.timestamp)
+        new_transaction = Transaction(twi_user=payreq.user_display, twi_message=payreq.user_message, user_id=social_id, tx_id=txhash, amount=str('%g' % grs_amount), timestamp=payreq.timestamp, token="BCH")
         db.session.add(new_transaction)
         db.session.commit()
 

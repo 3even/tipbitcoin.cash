@@ -90,7 +90,7 @@ class Transaction(db.Model):
 
     twi_user = db.Column(db.String(25))
     twi_message = db.Column(db.String(255))
-
+    token = db.Column(db.String(100), default='BCH')
     # payment_method = db.Column(db.String(10))
 
     def __repr__(self):

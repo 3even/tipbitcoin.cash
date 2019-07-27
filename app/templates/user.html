@@ -92,15 +92,9 @@
               Paypal
              </div>
             {% endif %}
-            {% if user.tx_id|length > 17 %}
              <div class="col-md-4">
-               {{ user.amount }} BCH
+               {{ user.amount }} {{ user.token }}
 	     </div>
-            {% else %}
-             <div class="col-md-4">
-               ${{ user.amount }}
-              </div>
-            {% endif %}
             </div>
     {% endif %}
 {% endfor %}
@@ -138,7 +132,7 @@
                    <a href="https://explorer.bitcoin.com/bch/tx/{{ user.tx_id }}">{{ user.tx_id | truncate(20) }}</a>
                  </div>
                  <div class="col-md-4">
-                   {{ user.amount }} BCH
+                   {{ user.amount }} {{ user.token }}
                   </div>
                 </div>
               {% endif %}
