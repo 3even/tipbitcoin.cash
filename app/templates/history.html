@@ -61,7 +61,7 @@
 		{% if user.token == "SPICE" %}
 			<div class="col-md-1" style="padding-left:0px;"><img src="https://tokens.bch.sx/128/4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf.png" height="15"></div>
 		{% endif %}
-			{{ user.amount }} {{ user.token }}
+			{{ "{0:.8f}".format(user.amount|float).rstrip("0") }} {{ user.token }}
 		</div>
 		<div class="col-md-offset-3">
 			{{ user.timestamp }}
