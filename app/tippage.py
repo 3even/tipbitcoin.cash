@@ -144,7 +144,8 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
             else:
                 msg=''
 
-            donation = "*" + payrec.user_display + "* donated *" + str(spice_amount) + " SPICE*!\n"
+            amt_frmt = "{0:.8f}".format(spice_amount).rstrip("0")
+            donation = "*" + payrec.user_display + "* donated *" + amt_frmt + " SPICE*!\n"
             tip_call = {
                     'type'       : 'donation',
                     'message'    : donation,
@@ -163,7 +164,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
 
             print("Saving transaction data in database...")
             payreq = PayReq.query.filter_by(addr=grs_addr).first()
-            new_transaction = Transaction(twi_user=payreq.user_display, twi_message=payreq.user_message, user_id=social_id, tx_id=txhash, amount=str(spice_amount), timestamp=payreq.timestamp, token="SPICE")
+            new_transaction = Transaction(twi_user=payreq.user_display, twi_message=payreq.user_message, user_id=social_id, tx_id=txhash, amount=amt_frmt, timestamp=payreq.timestamp, token="SPICE")
             db.session.add(new_transaction)
             db.session.commit()
 
@@ -196,7 +197,8 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
         user.streamlabs_atoken = tip_response['access_token']
         db.session.commit()
 
-        grs_amount_display = " ("+ str(grs_amount) +" BCH Donated)"
+        amt_frmt = "{0:.8f}".format(grs_amount).rstrip("0")
+        grs_amount_display = " ("+ amt_frmt +" BCH Donated)"
 
         if payrec.user_message:
             msg=payrec.user_message
@@ -242,7 +244,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
         print("Saving transaction data in database...")
         # transaction = Transaction.query.filter_by(addr=btc_addr).first()
         payreq = PayReq.query.filter_by(addr=grs_addr).first()
-        new_transaction = Transaction(twi_user=payreq.user_display, twi_message=payreq.user_message, user_id=social_id, tx_id=txhash, amount=str(grs_amount), timestamp=payreq.timestamp, token="BCH")
+        new_transaction = Transaction(twi_user=payreq.user_display, twi_message=payreq.user_message, user_id=social_id, tx_id=txhash, amount=amt_frmt, timestamp=payreq.timestamp, token="BCH")
         db.session.add(new_transaction)
         db.session.commit()
 
