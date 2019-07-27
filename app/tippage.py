@@ -144,7 +144,8 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
             else:
                 msg=''
 
-            donation = "*" + payrec.user_display + "* donated *" + str(spice_amount) + " SPICE*!\n"
+            spice_amount_display = "{0:.8f}".format(spice_amount).rstrip("0")
+            donation = "*" + payrec.user_display + "* donated *" + spice_amount_display + " SPICE*!\n"
             tip_call = {
                     'type'       : 'donation',
                     'message'    : donation,
