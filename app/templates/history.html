@@ -55,6 +55,12 @@
 			<a href="https://explorer.bitcoin.com/bch/tx/{{ user.tx_id }}">{{ user.tx_id | truncate(20) }}</a>
 		</div>
 		<div class="col-md-2">
+		{% if user.token == "BCH" %}
+			<div class="col-md-1" style="padding-left:0px;"><img src="https://i.imgur.com/EL9notj.png" height="15"></div>
+		{% endif %}
+		{% if user.token == "SPICE" %}
+			<div class="col-md-1" style="padding-left:0px;"><img src="https://tokens.bch.sx/128/4de69e374a8ed21cbddd47f2338cc0f479dc58daa2bbe11cd604ca488eca0ddf.png" height="15"></div>
+		{% endif %}
 			{{ user.amount }} {{ user.token }}
 		</div>
 		<div class="col-md-offset-3">
