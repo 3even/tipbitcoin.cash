@@ -27,3 +27,13 @@ function GetStreamStatus(username) {
  }
 });
 }
+
+function selectRandomBackground() {
+$(document).ready(function() {
+
+  var random= Math.floor(Math.random() * 5) + 0;
+  var wallpapers = ["url('/static/img/pubg.jpg')", "url('/static/img/fh4.jpg')", "url('/static/img/fortnite.jpg')", "url('/static/img/halo.jpg')", "url('/static/img/nfs.jpg')"];
+  document.body.style.backgroundImage=wallpapers[random]; //content
+});
+
+}
