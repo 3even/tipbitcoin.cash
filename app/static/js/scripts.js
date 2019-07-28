@@ -30,10 +30,9 @@ function GetStreamStatus(username) {
 
 function selectRandomBackground() {
 $(document).ready(function() {
-
-  var random= Math.floor(Math.random() * 5) + 0;
-  var wallpapers = ["url('/static/img/pubg.jpg')", "url('/static/img/fh4.jpg')", "url('/static/img/fortnite.jpg')", "url('/static/img/halo.jpg')", "url('/static/img/nfs.jpg')"];
-  document.body.style.backgroundImage=wallpapers[random]; //content
+  var wallpapers = ["url('/static/img/pubg.jpg')", "url('/static/img/fh4.jpg')", "url('/static/img/fortnite.jpg')", "url('/static/img/halo.jpg')", "url('/static/img/nfs.jpg')", "url('/static/img/cp2077.jpg')", "url('/static/img/gta5.jpg')", 
+  "url('/static/img/td.jpg')", "url('/static/img/bf.jpg')", "url('/static/img/dva.jpg')", "url('/static/img/eso.jpg')", "url('/static/img/fs.jpg')", "url('/static/img/mec.jpg')", "url('/static/img/wd1.jpg')", "url('/static/img/wd2.jpg')"];
+  var random= Math.floor(Math.random() * wallpapers.length);
+  $('body').css('background-image', wallpapers[random]);
 });
-
 }
