@@ -22,6 +22,7 @@ import requests
 import time
 import sys
 import qrcode
+import random
 from werkzeug.datastructures import ImmutableOrderedMultiDict
 
 
@@ -32,13 +33,6 @@ api_tips = streamlabs_api_url + "donations"
 callback_result = 0
 
 Bootstrap(app)
-
-@app.route('/delete_fake_transactions')
-def delete_fake_transactions():
-
-    Transaction.query.filter_by(id=45).delete()
-    db.session.commit()
-    return redirect(url_for('history'))
 
 @app.route('/')
 @app.route('/index')
@@ -52,9 +46,14 @@ def index():
             except:
                 return redirect(url_for('logout'))
 
+    user_one = random.choice(User.query.all())
+    user_two = random.choice(User.query.filter(User.id!=user_one.id).all())
+    user_three = random.choice(User.query.filter(User.id!=user_two.id, User.id!=user_one.id).all())
+    user_four = random.choice(User.query.filter(User.id!=user_three.id, User.id!=user_two.id, User.id!=user_one.id).all())
+    user_five = random.choice(User.query.filter(User.id!=user_four.id, User.id!=user_three.id, User.id!=user_two.id, User.id!=user_one.id).all())
     return render_template(
             'index.html',
-            session_nickname=None)
+            session_nickname=None, userone = user_one, usertwo = user_two, userthree = user_three, userfour = user_four, userfive = user_five)
 
 @app.route('/user/<username>')
 def user(username):
