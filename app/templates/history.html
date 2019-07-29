@@ -64,7 +64,7 @@
 			{{ "{0:.8f}".format(user.amount|float).rstrip("0") }} {{ user.token }}
 		</div>
 		<div class="col-md-offset-3">
-			{{ user.timestamp }}
+			{{ user.timestamp.strftime('%Y-%m-%d %I:%M') }}
 		</div>
 
 <!-- {{ user.twi_message }}<br/> -->
@@ -83,3 +83,4 @@
 
 
 {% endblock %}
+
