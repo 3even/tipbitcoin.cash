@@ -49,20 +49,15 @@ def grab_random_server(serverList):
 
 def check_payment_on_address(addr, serverAddress, serverPort):
     success = False
-    while True:
-        addrHistory = get_from_electrum('blockchain.address.get_balance', 
-                [addr], 
-                server=serverAddress,
-                port=serverPort)
+    addrHistory = get_from_electrum('blockchain.address.get_balance', [addr], server=serverAddress, port=serverPort)
+    pp.pprint(addrHistory)
 
-        pp.pprint(addrHistory)
+    if addrHistory != -1:
+        sats = int(addrHistory['result']['unconfirmed'])
 
-        if addrHistory != -1:
-            sats = int(addrHistory['result']['unconfirmed'])
-
-            if sats > 0:
-                success = True
-                return sats
+        if sats > 0:
+            success = True
+            return sats
 
     return -1
 

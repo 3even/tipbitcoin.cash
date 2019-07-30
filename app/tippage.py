@@ -249,7 +249,7 @@ def payment_notify(social_id, payrec, balance, txhash, grs_addr):
 
         print("Transaction data saved!")
         print("Donation Alert Sent")
-        return tip_check
+        return tip_check.__str__()
 
 @app.route('/_create_payreq', methods=['POST'])
 def create_payment_request():
@@ -367,7 +367,7 @@ def send_test_alert():
     db.session.commit()
 
     grs_amount_display = " ("+ str('%g' % grs_amount) +" BCH Donated)"
-    msg='Example message!'
+    msg='This is a test tip alert.'
 
     donation = "*John Doe* donated *$" + str(usd_two_places) + "* in BCH! \n"
     tip_call = {
@@ -383,8 +383,8 @@ def send_test_alert():
     print(tip_call)
 
     tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
-
-    return tip_call
+    print(tip_check_alert)
+    return tip_call.__str__()
 
 @app.route('/_test_alert_slp', methods=['POST'])
 def send_test_alert_slp():
@@ -430,4 +430,4 @@ def send_test_alert_slp():
 
     tip_check_alert = requests.post(api_custom, data=tip_call, headers=headers).json()
 
-    return tip_call
+    return tip_call.__str__()
