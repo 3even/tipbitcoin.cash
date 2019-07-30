@@ -58,6 +58,11 @@ def check_payment_on_address(addr, serverAddress, serverPort):
         if sats > 0:
             success = True
             return sats
+        else:
+            satsConfirmed = int(addrHistory['result']['confirmed'])
+            if satsConfirmed > 0:
+                success = True
+                return satsConfirmed
 
     return -1
 
