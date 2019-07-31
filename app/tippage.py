@@ -26,7 +26,7 @@ import time
 import sys
 import qrcode
 import os
-import random 
+import random
 from werkzeug.datastructures import ImmutableOrderedMultiDict
 
 streamlabs_api_url = 'https://www.streamlabs.com/api/v1.0/'
@@ -36,7 +36,7 @@ api_tips = streamlabs_api_url + "donations"
 api_custom = streamlabs_api_url + "alerts"
 callback_result = 0
 
-def read_server_list(): 
+def read_server_list():
     with open("servers.json", 'r') as f:
         return json.loads(f.read())
 
@@ -49,7 +49,7 @@ def grab_random_server(serverList):
             serverPort = serverObject['t']
         elif 's' in serverObject:
             serverPort = serverObject['s']
-        else: 
+        else:
             serverAddress = None
 
     return {
@@ -367,7 +367,7 @@ def send_test_alert():
     db.session.commit()
 
     grs_amount_display = " ("+ str('%g' % grs_amount) +" BCH Donated)"
-    msg='This is a test tip alert.'
+    msg='Example message!'
 
     donation = "*John Doe* donated *$" + str(usd_two_places) + "* in BCH! \n"
     tip_call = {
