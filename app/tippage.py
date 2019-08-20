@@ -51,7 +51,7 @@ def grab_random_server(serverList):
             serverPort = serverObject['s']
         else:
             serverAddress = None
-
+    print(serverAddress + ":" + serverPort)
     return {
             'serverAddress': str(serverAddress),
             'serverPort'   : int(serverPort)
